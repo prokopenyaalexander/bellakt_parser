@@ -6,7 +6,7 @@ import os
 from config.db_config import create_connection
 from config.paths_config import site_set
 from config.headers import header
-
+from config.time_config import time_format
 
 
 date = datetime.date.today()
@@ -104,5 +104,5 @@ def write_to_db(connection, name, url, date_time):
 
 
 connect = create_connection()
-main_url = "https://bellaktshop.by/catalog"
-get_categories(main_url, connect)
+# main_url = "https://bellaktshop.by/catalog"
+# get_categories(main_url, connect)

@@ -41,8 +41,8 @@ def get_pricing_urls(connection):
         if soup.find("div", class_="nums"):
             number_of_pages = int(soup.find("div", class_="nums").find_all("a", class_="dark_link")[-1].text)
             process_multiple_pages_data(url, number_of_pages, connection)
-        # else:
-        #     process_single_page_data(url, connection)
+        else:
+            process_single_page_data(url, connection)
 
 
 def process_multiple_pages_data(url, number_of_pages, connection):
