@@ -1,0 +1,693 @@
+[
+    {
+        "name": "\u041c\u043e\u043b\u043e\u0447\u043d\u044b\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b",
+        "url": "https://bellaktshop.by/catalog/molochnye-produkty/",
+        "subcategories": [
+            {
+                "name": "\u041c\u043e\u043b\u043e\u043a\u043e \u0438 \u0441\u043b\u0438\u0432\u043a\u0438",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/moloko-i-slivki/",
+                "subcategories": [
+                    {
+                        "name": "\u041c\u043e\u043b\u043e\u043a\u043e",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/moloko-i-slivki/moloko1/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0421\u043b\u0438\u0432\u043a\u0438",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/moloko-i-slivki/slivki/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0421\u0443\u0445\u043e\u0435 \u043c\u043e\u043b\u043e\u043a\u043e",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/moloko-i-slivki/sukhoe-moloko/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041a\u043e\u0437\u044c\u0435 \u043c\u043e\u043b\u043e\u043a\u043e",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/moloko-i-slivki/koze-moloko/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u041a\u0435\u0444\u0438\u0440 \u0438 \u0440\u044f\u0436\u0435\u043d\u043a\u0430",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/kefir-i-ryazhenka/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0421\u044b\u0432\u043e\u0440\u043e\u0442\u043a\u0430",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/syvorotka-/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0421\u043c\u0435\u0442\u0430\u043d\u0430",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/smetana/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041c\u0430\u0441\u043b\u043e",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/maslo-slivochnoe/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0422\u0432\u043e\u0440\u043e\u0433",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/tvorog-i-tvorozhnye-produkty/",
+                "subcategories": [
+                    {
+                        "name": "\u0422\u0432\u043e\u0440\u043e\u0433 \u0432 \u0443\u043f\u0430\u043a\u043e\u0432\u043a\u0435",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/tvorog-i-tvorozhnye-produkty/tvoroga/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0422\u0432\u043e\u0440\u043e\u0433 \u0432 \u0430\u0437\u043e\u0442\u0435",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/tvorog-i-tvorozhnye-produkty/tvorog-vesovoy/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041f\u0440\u043e\u0434\u0443\u043a\u0442 \u0434\u043b\u044f \u0437\u0430\u043f\u0435\u043a\u0430\u043d\u0438\u044f",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/tvorog-i-tvorozhnye-produkty/desert-tvorozhnyy/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u0422\u0432\u043e\u0440\u043e\u0433 \u0437\u0435\u0440\u043d\u0435\u043d\u044b\u0439",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/tvorog-zernenyy/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0422\u0432\u043e\u0440\u043e\u0436\u043d\u044b\u0435 \u0434\u0435\u0441\u0435\u0440\u0442\u044b",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/deserty/",
+                "subcategories": [
+                    {
+                        "name": "\u041c\u0430\u0441\u0441\u0430 \u0442\u0432\u043e\u0440\u043e\u0436\u043d\u0430\u044f",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/deserty/massa-tvorozhnaya1/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041a\u0440\u0435\u043c\u0430 \u0442\u0432\u043e\u0440\u043e\u0436\u043d\u044b\u0435",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/deserty/krem-tvorozhnyy1/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0421\u044b\u0440\u043a\u0438 \u0442\u0432\u043e\u0440\u043e\u0436\u043d\u044b\u0435",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/deserty/syrki-tvorozhnye/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041c\u044f\u0433\u043a\u0438\u0439 \u0442\u0432\u043e\u0440\u043e\u0433",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/deserty/myagkiy-tvorog-/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0421\u044b\u0440\u043a\u0438 \u0433\u043b\u0430\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/deserty/syrki-glazirovannye/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041f\u0438\u0440\u043e\u0436\u043d\u044b\u0435",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/deserty/pirozhnye/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0422\u043e\u0440\u0442\u044b",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/deserty/torty/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u0414\u0440\u0443\u0433\u0438\u0435 \u0434\u0435\u0441\u0435\u0440\u0442\u044b",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/drugie-deserty/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0421\u044b\u0440\u043d\u0438\u043a\u0438",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/polufabrikaty-iz-tvoroga/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041f\u0440\u043e\u0434\u0443\u043a\u0442 \u0442\u0432\u043e\u0440\u043e\u0436\u043d\u044b\u0439 \u0441\u043e\u043b\u0435\u043d\u044b\u0439",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/produkt-tvorozhnyy-solenyy/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0413\u043e\u0442\u043e\u0432\u044b\u0435 \u043c\u043e\u043b\u043e\u0447\u043d\u044b\u0435 \u043a\u0430\u0448\u0438",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/gotovye-molochnye-kashi/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0419\u043e\u0433\u0443\u0440\u0442\u044b",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/yogurty/",
+                "subcategories": []
+            },
+            {
+                "name": "Exponenta",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/exponenta/",
+                "subcategories": [
+                    {
+                        "name": " IMMUNO SHOT",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/exponenta/immuno-shot/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "BIO-SKYR",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/exponenta/bio-skyr/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "HIGH-PRO ",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/exponenta/high-pro-/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0419\u041e\u0413\u0423\u0420\u0422\u041d\u0410\u042f",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/exponenta/yogurtnaya/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041a\u0415\u0424\u0418\u0420\u041d\u0410\u042f",
+                        "url": "https://bellaktshop.by/catalog/molochnye-produkty/exponenta/kefirnaya/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u0421\u0443\u0445\u0438\u0435 \u0437\u0430\u043a\u0432\u0430\u0441\u043a\u0438",
+                "url": "https://bellaktshop.by/catalog/molochnye-produkty/sukhie-zakvaski/",
+                "subcategories": []
+            }
+        ]
+    },
+    {
+        "name": "\u0421\u044b\u0440\u044b",
+        "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/",
+        "subcategories": [
+            {
+                "name": "\u041c\u043e\u0446\u0430\u0440\u0435\u043b\u043b\u0430",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/motsarella/",
+                "subcategories": [
+                    {
+                        "name": "\u041f\u0438\u0446\u0446\u0430",
+                        "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/motsarella/pitstsa/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0428\u0430\u0440\u0438\u043a\u0438",
+                        "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/motsarella/shariki/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u0421\u0443\u043b\u0443\u0433\u0443\u043d\u0438",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/suluguni/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0422\u0432\u0435\u0440\u0434\u044b\u0435 \u0441\u044b\u0440\u044b",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/belovezhskie-syry/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041c\u044f\u0433\u043a\u0438\u0435 \u0441\u044b\u0440\u044b",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/vualya-bellakt/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0420\u0438\u043a\u043e\u0442\u0442\u0430",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/rikotta/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041c\u0430\u0441\u043a\u0430\u0440\u043f\u043e\u043d\u0435",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/maskarpone/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041a\u0440\u0435\u043c\u0447\u0438\u0437",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/kremchiz/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041f\u0440\u043e\u0432\u043e\u043b\u0435\u0442\u0442\u0430 \u0438 \u043f\u0440\u043e\u0432\u043e\u043b\u0430",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/provoletta-i-provola/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0421\u044b\u0440 \u0441 \u043f\u043b\u0435\u0441\u0435\u043d\u044c\u044e",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/kopchyenye-syry/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041f\u0430\u0440\u043c\u0435\u0437\u0430\u043d",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/parmezan/",
+                "subcategories": []
+            },
+            {
+                "name": "Primemilk",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/primemilk/",
+                "subcategories": []
+            },
+            {
+                "name": "Cooking",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/cooking/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0422\u0432\u043e\u0440\u043e\u0436\u043d\u044b\u0435 \u0441\u044b\u0440\u044b",
+                "url": "https://bellaktshop.by/catalog/syry-bonfesto-i-cooking/syr-s-plesenyu/",
+                "subcategories": []
+            }
+        ]
+    },
+    {
+        "name": "\u0414\u0435\u0442\u0441\u043a\u043e\u0435 \u043f\u0438\u0442\u0430\u043d\u0438\u0435",
+        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/",
+        "subcategories": [
+            {
+                "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u0441\u043c\u0435\u0441\u0438",
+                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-smesi/",
+                "subcategories": [
+                    {
+                        "name": "\u0414\u0435\u0442\u044f\u043c \u0441 0 \u0434\u043e 6 \u043c\u0435\u0441\u044f\u0446\u0435\u0432",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-smesi/s-0-6-mesyatsev-/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0414\u0435\u0442\u044f\u043c \u0441 6 \u0434\u043e 12 \u043c\u0435\u0441\u044f\u0446\u0435\u0432",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-smesi/s-6-mesyatsev-do-1-goda/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0414\u0435\u0442\u044f\u043c \u0431\u043e\u043b\u0435\u0435 12 \u043c\u0435\u0441\u044f\u0446\u0435\u0432",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-smesi/bolee-1-goda/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u043a\u0430\u0448\u0438",
+                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/kashi/",
+                "subcategories": [
+                    {
+                        "name": "\u041a\u0430\u0448\u0438 \u043d\u0430 \u043a\u043e\u0437\u044c\u0435\u043c \u043c\u043e\u043b\u043e\u043a\u0435",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/kashi/na-kozem-moloke/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041c\u043e\u043b\u043e\u0447\u043d\u044b\u0435 \u043a\u0430\u0448\u0438",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/kashi/molochnye/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0411\u0435\u0437\u043c\u043e\u043b\u043e\u0447\u043d\u044b\u0435 \u043a\u0430\u0448\u0438",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/kashi/bezmolochnye/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0413\u043e\u0442\u043e\u0432\u044b\u0435 \u043a\u0430\u0448\u0438",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/kashi/gotovye/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u0414\u0435\u0442\u0441\u043a\u043e\u0435 \u043f\u044e\u0440\u0435",
+                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/",
+                "subcategories": [
+                    {
+                        "name": "\u0424\u0440\u0443\u043a\u0442\u043e\u0432\u043e\u0435 \u043f\u044e\u0440\u0435",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/fruktovye/",
+                        "subcategories": [
+                            {
+                                "name": "\u0424\u0440\u0443\u043a\u0442\u043e\u0432\u043e\u0435 \u043f\u044e\u0440\u0435 \"Mimimi\"",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/fruktovye/fruktovoe-pyure-mimimi/",
+                                "subcategories": []
+                            },
+                            {
+                                "name": "\u0424\u0440\u0443\u043a\u0442\u043e\u0432\u043e\u0435 \u043f\u044e\u0440\u0435 \"\u0411\u0435\u043b\u043b\u0430\u043a\u0442\"",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/fruktovye/fruktovye-pyure-bellakt/",
+                                "subcategories": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "\u041e\u0432\u043e\u0449\u043d\u043e\u0435 \u043f\u044e\u0440\u0435",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/ovoshchnoe/",
+                        "subcategories": [
+                            {
+                                "name": "\u041e\u0432\u043e\u0449\u043d\u043e\u0435 \u043f\u044e\u0440\u0435 Mimimi",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/ovoshchnoe/ovoshchnoe-pyure-mimimi/",
+                                "subcategories": []
+                            },
+                            {
+                                "name": "\u041e\u0432\u043e\u0449\u043d\u043e\u0435 \u043f\u044e\u0440\u0435 \u0411\u0435\u043b\u043b\u0430\u043a\u0442",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/ovoshchnoe/ovoshchnoe-pyure-bellakt/",
+                                "subcategories": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "\u041f\u044e\u0440\u0435 \u0432 \u043c\u044f\u0433\u043a\u043e\u0439 \u0443\u043f\u0430\u043a\u043e\u0432\u043a\u0435",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/v-myagkoy-upakovke/",
+                        "subcategories": [
+                            {
+                                "name": "\u041f\u044e\u0440\u0435 \u0411\u0435\u043b\u043b\u0430\u043a\u0442 \u0432 \u043c\u044f\u0433\u043a\u043e\u0439 \u0443\u043f\u0430\u043a\u043e\u0432\u043a\u0435, 90 \u0433\u0440",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/v-myagkoy-upakovke/pyure-bellakt-90-gr/",
+                                "subcategories": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "\u041c\u044f\u0441\u043d\u043e\u0435 \u043f\u044e\u0440\u0435",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/myasnoe/",
+                        "subcategories": [
+                            {
+                                "name": "\u041c\u044f\u0441\u043d\u044b\u0435 \u043f\u044e\u0440\u0435 Mimimi",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/myasnoe/myasnye-pyure-mimimi/",
+                                "subcategories": []
+                            },
+                            {
+                                "name": "\u041c\u044f\u0441\u043d\u044b\u0435 \u043f\u044e\u0440\u0435 \u0411\u0435\u043b\u043b\u0430\u043a\u0442",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/myasnoe/myasnye-pyure-bellakt/",
+                                "subcategories": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "\u0420\u044b\u0431\u043d\u043e\u0435 \u043f\u044e\u0440\u0435",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pyure/rybnoe/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u0414\u0435\u0442\u0441\u043a\u0430\u044f \u0441\u043e\u043a\u043e\u0432\u0430\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0446\u0438\u044f",
+                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-soki-i-nektary/",
+                "subcategories": [
+                    {
+                        "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u043c\u043e\u0440\u0441\u044b",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-soki-i-nektary/detskie-morsy/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u043d\u0435\u043a\u0442\u0430\u0440\u044b",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-soki-i-nektary/detskie-nektary/",
+                        "subcategories": [
+                            {
+                                "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u043d\u0435\u043a\u0442\u0430\u0440\u044b \"Mimimi\"",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-soki-i-nektary/detskie-nektary/detskie-nektary-mimimi/",
+                                "subcategories": []
+                            },
+                            {
+                                "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u043d\u0435\u043a\u0442\u0430\u0440\u044b \"\u0411\u0435\u043b\u043b\u0430\u043a\u0442\"",
+                                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-soki-i-nektary/detskie-nektary/detskie-nektary-bellakt/",
+                                "subcategories": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u0441\u043e\u043a\u0438",
+                        "url": "https://bellaktshop.by/catalog/detskoe-pitanie/detskie-soki-i-nektary/detskie-soki/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0439 \u0447\u0430\u0439",
+                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/chai/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0414\u0435\u0442\u0441\u043a\u043e\u0435 \u043f\u0435\u0447\u0435\u043d\u044c\u0435",
+                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/pechene/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0414\u043b\u044f \u0431\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0445 \u0438 \u043a\u043e\u0440\u043c\u044f\u0449\u0438\u0445 \u0436\u0435\u043d\u0449\u0438\u043d",
+                "url": "https://bellaktshop.by/catalog/detskoe-pitanie/dlya-beremennykh-i-kormyashchikh-zhenshchin/",
+                "subcategories": []
+            }
+        ]
+    },
+    {
+        "name": "\u0414\u0435\u0442\u0441\u043a\u0438\u0435 \u043c\u043e\u043b\u043e\u0447\u043d\u044b\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b",
+        "url": "https://bellaktshop.by/catalog/detskaya-molochnaya-kukhnya/",
+        "subcategories": [
+            {
+                "name": "\u041c\u043e\u043b\u043e\u043a\u043e \u0438 \u043a\u0435\u0444\u0438\u0440",
+                "url": "https://bellaktshop.by/catalog/detskaya-molochnaya-kukhnya/moloko/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0411\u0438\u043e\u043b\u0430\u043a\u0442",
+                "url": "https://bellaktshop.by/catalog/detskaya-molochnaya-kukhnya/biolakt/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0419\u043e\u0433\u0443\u0440\u0442 \u0434\u0435\u0442\u0441\u043a\u0438\u0439",
+                "url": "https://bellaktshop.by/catalog/detskaya-molochnaya-kukhnya/yogurt-detskiy/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0422\u0432\u043e\u0440\u043e\u0433 \u0434\u0435\u0442\u0441\u043a\u0438\u0439",
+                "url": "https://bellaktshop.by/catalog/detskaya-molochnaya-kukhnya/tvorog-detskiy/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0413\u043e\u0442\u043e\u0432\u044b\u0435 \u0436\u0438\u0434\u043a\u0438\u0435 \u043a\u0430\u0448\u0438",
+                "url": "https://bellaktshop.by/catalog/detskaya-molochnaya-kukhnya/kashi-zhidkie-gotovye/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041a\u043e\u043a\u0442\u0435\u0439\u043b\u0438 \u043c\u043e\u043b\u043e\u0447\u043d\u044b\u0435 \u0412\u0443\u043d\u0434\u0435\u0440\u043a\u0438\u043d\u0438 3+",
+                "url": "https://bellaktshop.by/catalog/detskaya-molochnaya-kukhnya/kokteyli-molochnyee-vunderkini-3/",
+                "subcategories": []
+            }
+        ]
+    },
+    {
+        "name": "\u041f\u043e\u0434\u0433\u0443\u0437\u043d\u0438\u043a\u0438 \u0438 \u0442\u0440\u0443\u0441\u0438\u043a\u0438",
+        "url": "https://bellaktshop.by/catalog/podguzniki-i-trusiki/",
+        "subcategories": [
+            {
+                "name": "\u041f\u043e\u0434\u0433\u0443\u0437\u043d\u0438\u043a\u0438",
+                "url": "https://bellaktshop.by/catalog/podguzniki-i-trusiki/podguzniki/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0422\u0440\u0443\u0441\u0438\u043a\u0438",
+                "url": "https://bellaktshop.by/catalog/podguzniki-i-trusiki/trusiki/",
+                "subcategories": []
+            }
+        ]
+    },
+    {
+        "name": "\u0421\u043f\u043e\u0440\u0442\u0438\u0432\u043d\u043e\u0435 \u043f\u0438\u0442\u0430\u043d\u0438\u0435",
+        "url": "https://bellaktshop.by/catalog/sportiv-pitanie/",
+        "subcategories": [
+            {
+                "name": "Exponenta",
+                "url": "https://bellaktshop.by/catalog/sportiv-pitanie/exponenta1/",
+                "subcategories": []
+            },
+            {
+                "name": "Genetika",
+                "url": "https://bellaktshop.by/catalog/sportiv-pitanie/genetika/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0414\u0435\u0441\u0435\u0440\u0442\u044b",
+                "url": "https://bellaktshop.by/catalog/sportiv-pitanie/desertyyyy/",
+                "subcategories": []
+            }
+        ]
+    },
+    {
+        "name": "\u041f\u0440\u043e\u0447\u0438\u0435 \u0442\u043e\u0432\u0430\u0440\u044b",
+        "url": "https://bellaktshop.by/catalog/prochie-tovary/",
+        "subcategories": [
+            {
+                "name": "\u0421\u0443\u0445\u0438\u0435 \u043a\u0430\u0448\u0438",
+                "url": "https://bellaktshop.by/catalog/prochie-tovary/sukhie-kashi-/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0417\u0430\u043a\u0432\u0430\u0441\u043a\u0430",
+                "url": "https://bellaktshop.by/catalog/prochie-tovary/zakvaska/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0420\u044b\u0431\u043d\u0430\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0446\u0438\u044f",
+                "url": "https://bellaktshop.by/catalog/prochie-tovary/rybnaya-produktsiya/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0421\u043e\u043a\u0438 Fazenda",
+                "url": "https://bellaktshop.by/catalog/prochie-tovary/sokii-fazenda/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041a\u043e\u043d\u0434\u0438\u0442\u0435\u0440\u0441\u043a\u0438\u0435 \u0438\u0437\u0434\u0435\u043b\u0438\u044f",
+                "url": "https://bellaktshop.by/catalog/prochie-tovary/konditerskie-tovary/",
+                "subcategories": []
+            }
+        ]
+    },
+    {
+        "name": "\u041a\u043e\u043d\u0441\u0435\u0440\u0432\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u0430\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0446\u0438\u044f",
+        "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/",
+        "subcategories": [
+            {
+                "name": "\u0413\u043e\u0440\u043e\u0448\u0435\u043a",
+                "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/goroshek/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0417\u0430\u043a\u0443\u0441\u043a\u0438",
+                "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/zakuski/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041a\u0432\u0430\u0448\u0435\u043d\u0438\u044f \u0438 \u0441\u043e\u043b\u0435\u043d\u0438\u044f",
+                "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/kvasheniya-i-soleniya/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041a\u043e\u043d\u0444\u0438\u0442\u044e\u0440",
+                "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/konfityur/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041c\u0430\u0440\u0438\u043d\u0430\u0434\u044b",
+                "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/marinady/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041f\u044e\u0440\u0435 Fazenda",
+                "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/pyure-fazenda/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0421\u0430\u043b\u0430\u0442\u044b",
+                "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/salaty/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0421\u043e\u0443\u0441\u044b \u0438 \u043a\u0435\u0442\u0447\u0443\u043f\u044b",
+                "url": "https://bellaktshop.by/catalog/konservirovannaya-produktsiya/sousy-i-ketchupy/",
+                "subcategories": []
+            }
+        ]
+    },
+    {
+        "name": "\u0425\u043e\u0440\u0435\u043a\u0430",
+        "url": "https://bellaktshop.by/catalog/khoreka/",
+        "subcategories": [
+            {
+                "name": "\u0417\u0430\u043a\u0432\u0430\u0441\u043a\u0430 \u0441\u0443\u0445\u0430\u044f",
+                "url": "https://bellaktshop.by/catalog/khoreka/zakvaska-sukhaya/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041a\u0440\u0443\u043f\u043d\u0430\u044f \u0444\u0430\u0441\u043e\u0432\u043a\u0430 ",
+                "url": "https://bellaktshop.by/catalog/khoreka/krupnaya-fasovka-pod-zakaz/",
+                "subcategories": []
+            },
+            {
+                "name": "\u041c\u043e\u043b\u043e\u0447\u043d\u0430\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0446\u0438\u044f",
+                "url": "https://bellaktshop.by/catalog/khoreka/molochnaya-produktsiya/",
+                "subcategories": []
+            },
+            {
+                "name": "\u0421\u044b\u0440\u044b ",
+                "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/",
+                "subcategories": [
+                    {
+                        "name": "\u041c\u0430\u0430\u0441\u0434\u0430\u043c",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/maasdam/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0421\u044b\u0440\u044b Primemilk",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/syry-primemilk/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041c\u043e\u0446\u0430\u0440\u0435\u043b\u043b\u0430",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/motsarella_xor/",
+                        "subcategories": [
+                            {
+                                "name": "\u041c\u043e\u0446\u0430\u0440\u0435\u043b\u043b\u0430 \u043f\u0438\u0446\u0446\u0430",
+                                "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/motsarella_xor/motsarella-pitstsa/",
+                                "subcategories": []
+                            },
+                            {
+                                "name": "\u041c\u043e\u0446\u0430\u0440\u0435\u043b\u043b\u0430 \u0448\u0430\u0440\u0438\u043a\u0438",
+                                "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/motsarella_xor/motsarella-shariki/",
+                                "subcategories": []
+                            },
+                            {
+                                "name": "\u041c\u043e\u0446\u0430\u0440\u0435\u043b\u043b\u0430 Cooking",
+                                "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/motsarella_xor/motsarella-cooking/",
+                                "subcategories": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "\u0427\u0435\u0434\u0434\u0435\u0440",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/chedder/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0413\u0430\u0443\u0434\u0430",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/gauda/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0421\u0443\u043b\u0443\u0433\u0443\u043d\u0438",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/suluguni_xor/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041c\u0430\u0441\u043a\u0430\u0440\u043f\u043e\u043d\u0435",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/maskarpone_xor/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u041a\u0440\u0435\u043c\u0447\u0438\u0437",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/kremchiz_xor/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0420\u0438\u043a\u043e\u0442\u0442\u0430",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/rikotta_xor/",
+                        "subcategories": []
+                    },
+                    {
+                        "name": "\u0421\u044b\u0440 \u043c\u044f\u0433\u043a\u0438\u0439 \u0441\u043b\u0438\u0432\u043e\u0447\u043d\u044b\u0439",
+                        "url": "https://bellaktshop.by/catalog/khoreka/syry-bonfesto-i-cooking_xor/syr-myagkiy-slivochnyy/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "C\u043e\u043a\u0438",
+                "url": "https://bellaktshop.by/catalog/khoreka/coki/",
+                "subcategories": [
+                    {
+                        "name": "\u0421\u043e\u043a\u0438 \u0424\u0430\u0437\u0435\u043d\u0434\u0430",
+                        "url": "https://bellaktshop.by/catalog/khoreka/coki/soki-fazenda/",
+                        "subcategories": []
+                    }
+                ]
+            },
+            {
+                "name": "\u041a\u043e\u043d\u0441\u0435\u0440\u0432\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u0430\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0446\u0438\u044f",
+                "url": "https://bellaktshop.by/catalog/khoreka/konservirovannaya-produktsiya_xor/",
+                "subcategories": []
+            }
+        ]
+    }
+]
