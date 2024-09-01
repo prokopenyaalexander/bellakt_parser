@@ -6,11 +6,10 @@ import logging
 import datetime
 from config.paths_config import cr_tree
 from config.headers import header
+from config.time_config import time_format
 
 
 date = datetime.date.today()
-
-time_format = '%Y-%m-%d %H:%M:%S'
 log_directory = cr_tree
 os.makedirs(log_directory, exist_ok=True)
 log_file_path = os.path.join(log_directory, f'cr_tree_{date}.log')
@@ -19,7 +18,8 @@ logging.basicConfig(
     filename=log_file_path,
     level=logging.INFO,
     filemode='w',
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt=time_format
 )
 
 

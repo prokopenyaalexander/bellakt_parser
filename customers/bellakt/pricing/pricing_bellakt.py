@@ -8,9 +8,9 @@ from bs4 import BeautifulSoup
 from psycopg2 import OperationalError
 from config.db_config import create_connection
 from config.paths_config import pricing_log_directory
+from config.time_config import time_format
 
 
-time_format = '%Y-%m-%d %H:%M:%S'
 log_directory = pricing_log_directory
 os.makedirs(log_directory, exist_ok=True)
 date = datetime.date.today()
@@ -57,10 +57,10 @@ def get_pricing_details(connection):
         else:
             stock = "OOS"
         url = row[0]  # потому что, нужно использовать параметризацию.
-        writ_to_db(connection, sku, products_title, price, stock, url)
+        write_to_db(connection, sku, products_title, price, stock, url)
 
 
-def writ_to_db(connection, sku, products_title, price, stock, url):
+def write_to_db(connection, sku, products_title, price, stock, url):
     try:
         with connection.cursor() as cur:
             date_of_insertion = datetime.date.today()
