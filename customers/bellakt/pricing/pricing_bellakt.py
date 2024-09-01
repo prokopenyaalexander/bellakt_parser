@@ -9,15 +9,24 @@ from psycopg2 import OperationalError
 from config.db_config import create_connection
 from config.paths_config import pricing_log_directory
 
+
+time_format = '%Y-%m-%d %H:%M:%S'
 log_directory = pricing_log_directory
 os.makedirs(log_directory, exist_ok=True)
 date = datetime.date.today()
 log_file_path = os.path.join(log_directory, f'pricing_data_{date}.log')
 
-logging.basicConfig(filename=log_file_path, level=logging.INFO, filemode='w', format='- %(levelname)s - %(message)s')
+logging.basicConfig(
+    filename=log_file_path,
+    level=logging.INFO,
+    filemode='w',
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt=time_format
+)
 
 
 def get_pricing_details(connection):
+
     query = "SELECT pricing_url from urls_to_crawling"
     result = None
     try:
@@ -48,37 +57,41 @@ def get_pricing_details(connection):
         else:
             stock = "OOS"
         url = row[0]  # потому что, нужно использовать параметризацию.
-        try:
-            with connection.cursor() as cur:
-                date_of_insertion = datetime.date.today()
-                # Проверка существующих записей
+        writ_to_db(connection, sku, products_title, price, stock, url)
+
+
+def writ_to_db(connection, sku, products_title, price, stock, url):
+    try:
+        with connection.cursor() as cur:
+            date_of_insertion = datetime.date.today()
+            # Проверка существующих записей
+            cur.execute(
+                "SELECT COUNT(*) FROM pricing_products WHERE sku = %s AND date::date = %s",
+                (sku, date_of_insertion)
+            )
+            exists = cur.fetchone()[0] > 0
+
+            if exists:
+                # Обновление существующей записи
                 cur.execute(
-                    "SELECT COUNT(*) FROM pricing_products WHERE sku = %s AND date::date = %s",
-                    (sku, date_of_insertion)
+                    "UPDATE pricing_products SET sku = %s, name = %s, price = %s, stock = %s,"
+                    "product_url = %s, date = %s WHERE sku = %s AND date::date = %s",
+                    (sku, products_title, price, stock, url, date_of_insertion, sku, date_of_insertion)
                 )
-                exists = cur.fetchone()[0] > 0
+                logging.info(f"Updated data for SKU: {sku}")
+            else:
+                # Вставка новой записи
+                cur.execute(
+                    "INSERT INTO pricing_products (sku, name, price, stock, product_url, date)"
+                    " VALUES (%s, %s, %s, %s, %s, %s)",
+                    (sku, products_title, price, stock, url, date_of_insertion)
+                )
+                logging.info(f"Inserted data for SKU: {sku}")
 
-                if exists:
-                    # Обновление существующей записи
-                    cur.execute(
-                        "UPDATE pricing_products SET sku = %s, name = %s, price = %s, stock = %s,"
-                        "product_url = %s, date = %s WHERE sku = %s AND date::date = %s",
-                        (sku, products_title, price, stock, url, date_of_insertion, sku, date_of_insertion)
-                    )
-                    logging.info(f"Updated data for SKU: {sku}")
-                else:
-                    # Вставка новой записи
-                    cur.execute(
-                        "INSERT INTO pricing_products (sku, name, price, stock, product_url, date)"
-                        " VALUES (%s, %s, %s, %s, %s, %s)",
-                        (sku, products_title, price, temp_stock, url, date_of_insertion)
-                    )
-                    logging.info(f"Inserted data for SKU: {sku}")
-
-                connection.commit()  # Выполняем коммит после успешной вставки
-        except psycopg2.Error as e:
-            logging.error(f"Error inserting data: {e}")
-            connection.rollback()
+            connection.commit()  # Выполняем коммит после успешной вставки
+    except psycopg2.Error as e:
+        logging.error(f"Error inserting data: {e}")
+        connection.rollback()
     logging.info("Data insertion completed.")
 
 

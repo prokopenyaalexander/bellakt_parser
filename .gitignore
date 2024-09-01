@@ -164,4 +164,5 @@ cython_debug/
 #app_logs
 .log
 .txt
-.yaml
+*.yaml
+scripts/
