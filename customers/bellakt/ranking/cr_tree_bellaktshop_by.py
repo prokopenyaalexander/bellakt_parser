@@ -45,7 +45,7 @@ class GetCRTree:
                     "url": 'https://bellaktshop.by' + category_link,
                     "subcategories": subcategories
                 })
-            output_directory = os.path.expanduser("~/Documents/projects/profidata/customers/bellakt/ranking/")
+            output_directory = os.path.expanduser("~/Documents/projects/profidata/customers/bellakt/ranking/jsons/")
             os.makedirs(output_directory, exist_ok=True)
             file_path = os.path.join(output_directory, f"{datetime.date.today()} - categories_bellaktshop.json")
             with open(file_path, "w") as file:
