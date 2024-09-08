@@ -88,7 +88,6 @@ class GetCRTree:
 
 
 main_url = "https://bellaktshop.by/catalog"
+
 obj = GetCRTree(main_url)
 obj.get_cr_tree_categories()
-# get_cr_tree_categories(main_url)
-
