@@ -8,4 +8,7 @@ urls_to_pricing_module = os.path.expanduser('~/Documents/projects/profidata/cust
 ranking = os.path.expanduser('~/Documents/projects/profidata/customers/bellakt/logs/ranking_logs')
 cr_tree = os.path.expanduser('~/Documents/projects/profidata/customers/bellakt/logs/cr_tree_logs')
 site_set = os.path.expanduser('~/Documents/projects/profidata/customers/bellakt/logs/site_set_logs')
+db_connection_log_directory = os.path.expanduser('~/Documents/projects/profidata/customers/bellakt/logs'
+                                                 '/db_connection_logs')
+queries_log_directory = os.path.expanduser('~/Documents/projects/profidata/customers/bellakt/logs/queries_logs')
 

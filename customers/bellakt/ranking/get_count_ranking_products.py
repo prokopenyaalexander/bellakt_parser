@@ -32,7 +32,7 @@ def get_products_count(connection):
         logging.info(f"Data Extracted from site_tree table. QUERY: {query} ")
         result = cursor.fetchall()
     except OperationalError as e:
-        logging.error(f"Errorhas happend: {e}")
+        logging.error(f"Error has happend: {e}")
     logging.info(f"Starting processing data")
 
     for row in result:
@@ -40,7 +40,7 @@ def get_products_count(connection):
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
         if soup.find("div", class_="nums"):
-            number_of_pages = int(soup.find("div", class_="nums").find_all("a", class_="dark_link" )[-1].text)
+            number_of_pages = int(soup.find("div", class_="nums").find_all("a", class_="dark_link")[-1].text)
             process_multiple_pages_data(url, number_of_pages, connection)
         else:
             process_single_page_data(url, connection)
@@ -76,7 +76,8 @@ def process_multiple_pages_data(url, number_of_pages, connection):
                     "WHERE category_name = %s AND date::date = %s",
                     (category_name, date_of_insertion, category_url, category_name, date_of_insertion)
                 )
-                logging.info(f"Updated data for category_name: {category_name}, url - {category_url} {date_of_insertion}")
+                logging.info(f"Updated data for category_name: {category_name}, "
+                             f"url - {category_url} {date_of_insertion}")
             else:
                 # Вставка новой записи
                 cur.execute(
@@ -115,11 +116,13 @@ def process_single_page_data(url, connection):
                     "WHERE category_name = %s AND date::date = %s",
                     (category_name, date_of_insertion, category_url, category_name, date_of_insertion)
                 )
-                logging.info(f"Updated data for category_name: {category_name}, url - {category_url} {date_of_insertion}")
+                logging.info(f"Updated data for category_name: {category_name}, "
+                             f"url - {category_url} {date_of_insertion}")
             else:
                 # Вставка новой записи
                 cur.execute(
-                    "INSERT INTO ranking_products (category_name, count_of_products, date, category_url) VALUES (%s, %s, %s, %s)",
+                    "INSERT INTO ranking_products (category_name, count_of_products, date, category_url) "
+                    "VALUES (%s, %s, %s, %s)",
                     (category_name, count_of_products, date_of_insertion, category_url)
                 )
             logging.info(f"Inserted data for category_name {category_name}, url - {category_url} "

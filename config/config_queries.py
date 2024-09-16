@@ -1,4 +1,6 @@
-from sqlalchemy import text, insert, Table, MetaData
+from sqlalchemy import text, insert, Table, MetaData, select, update
+from sqlalchemy.orm import sessionmaker, Session
+
 from config.orm_config import engine
 import logging
 import datetime
@@ -50,3 +52,26 @@ def write_to_db(name, url, created_at):
     except Exception as e:
         connection.rollback()
         logger.error(f"Error while inserting data: {str(e)}")
+
+#  get_count_ranking_products block
+
+
+def select_all_from_site_tree():
+    Session = sessionmaker(engine)
+    session = Session()
+    try:
+        select_stmt = select(site_tree.c.name, site_tree.c.url)
+        result = session.execute(select_stmt)
+        records = result.fetchall()
+        for record in records:
+            print(record)
+    except Exception as e:
+        print(f"Error while executing SELECT query: {str(e)}")
+
+    finally:
+        session.close()
+        # logger.error(f"Error while inserting data: {str(e)}")
+
+
+select_all_from_site_tree()
+

@@ -26,7 +26,6 @@ logging.basicConfig(
 
 
 def get_pricing_details(connection):
-
     query = "SELECT pricing_url from urls_to_crawling"
     result = None
     try:
@@ -78,7 +77,7 @@ def write_to_db(connection, sku, products_title, price, stock, url):
                     "product_url = %s, date = %s WHERE sku = %s AND date::date = %s",
                     (sku, products_title, price, stock, url, date_of_insertion, sku, date_of_insertion)
                 )
-                logging.info(f"Updated data for SKU: {sku}")
+                logging.info(f"Updated data for SKU: {sku}, URL {url}")
             else:
                 # Вставка новой записи
                 cur.execute(
@@ -86,7 +85,7 @@ def write_to_db(connection, sku, products_title, price, stock, url):
                     " VALUES (%s, %s, %s, %s, %s, %s)",
                     (sku, products_title, price, stock, url, date_of_insertion)
                 )
-                logging.info(f"Inserted data for SKU: {sku}")
+                logging.info(f"Inserted data for SKU: {sku}, URL {url}")
 
             connection.commit()  # Выполняем коммит после успешной вставки
     except psycopg2.Error as e:

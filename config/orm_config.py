@@ -34,7 +34,7 @@ port = os.environ.get('DB_PORT')
 connection_string = f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}'
 
 # create_engine
-engine = create_engine(connection_string)
+engine = create_engine(connection_string, echo=True)
 
 
 # DB Connection
@@ -46,3 +46,6 @@ def create_connection():
         return connection
     except Exception as error_in_connection:
         logger.error(f'Something went wrong in connection - {error_in_connection}')
+
+
+create_connection()
