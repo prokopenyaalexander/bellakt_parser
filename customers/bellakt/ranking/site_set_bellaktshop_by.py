@@ -6,7 +6,7 @@ import os
 from config.paths_config import site_set
 from config.headers import header
 from config.time_config import time_format
-from config.config_queries import clear_table, write_to_db
+from config.config_queries import  write_to_db_site_set, clear_table
 
 
 date = datetime.date.today()
@@ -47,7 +47,8 @@ class SiteSet:
                 logging.info(f'MAIN CATEGORY ADDED {main_category} URL - {category_url}')
                 current_time = datetime.datetime.now(datetime.timezone.utc)
 
-                write_to_db(main_category, category_url, current_time)
+                write_to_db_site_set(main_category, category_url, current_time)
+
                 logging.info(f'Added record {main_category}, {category_url}')
 
                 # Process all nesting levels
@@ -59,7 +60,7 @@ class SiteSet:
         logging.info('End of processing.')
 
     def process_category(self, category_url, categories_tree, parent_category):
-        logging.info(f"Обработка категории: {category_url}")
+        logging.info(f"Processing category: {category_url}")
         try:
             response = requests.get(category_url, headers=header)
             response.raise_for_status()
@@ -74,7 +75,8 @@ class SiteSet:
                 categories_tree.append(category_name)
                 current_time = datetime.datetime.now(datetime.timezone.utc)
 
-                write_to_db(category_name, sub_category_url, current_time)
+                write_to_db_site_set(category_name, sub_category_url, current_time)
+
                 logging.info(f'Added record {category_name}, {category_url}')
 
                 # Recursively process subcategories
