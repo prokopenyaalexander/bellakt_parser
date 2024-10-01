@@ -1,5 +1,6 @@
 import os
-from sqlalchemy import create_engine
+from celery.bin.result import result
+from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 import logging
 import datetime
@@ -33,16 +34,16 @@ port = os.environ.get('DB_PORT')
 # Creation of connection_string
 connection_string = f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}'
 
-# create_engine
-engine = create_engine(connection_string, echo=True)
+# create_engine, подключение к postgresql
+engine = create_engine(connection_string, echo=False)
 
 
 # DB Connection
 def create_connection():
-    logging.info('Start connecting')
     try:
         with engine.connect() as connection:
-            logger.info('Connection to PostgreSQL DB successful')
+            res = connection.execute(text('SELECT version()'))
+            logger.info(f'Connection to PostgreSQL DB successful, version of PostgreSQL {res.first()}')
         return connection
     except Exception as error_in_connection:
         logger.error(f'Something went wrong in connection - {error_in_connection}')
