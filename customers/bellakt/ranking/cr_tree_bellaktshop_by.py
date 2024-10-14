@@ -87,7 +87,7 @@ class GetCRTree:
             logging.error(f"URL {category_url} is unavailable {response.status_code}")
 
 
-main_url = "https://bellaktshop.by/catalog"
-
-obj = GetCRTree(main_url)
-obj.get_cr_tree_categories()
+# main_url = "https://bellaktshop.by/catalog"
+#
+# obj = GetCRTree(main_url)
+# obj.get_cr_tree_categories()

@@ -1,6 +1,6 @@
 from sqlalchemy import text, insert, Table, MetaData, select, update, func, delete, and_
 from sqlalchemy.orm import sessionmaker, Session
-from config.models import SiteSet, RankingProducts, UrlsToCrawling
+from config.models import SiteSet, RankingProducts, UrlsToCrawling, ProductContent, PricingProducts
 from config.orm_core import engine
 import logging
 import datetime
@@ -29,16 +29,17 @@ site_tree = Table('site_tree', metadata, autoload_with=engine)
 siteset_orm = Table('siteset_orm', metadata, autoload_with=engine)
 ranking_products_orm = Table('ranking_products_orm', metadata, autoload_with=engine)
 urls_to_crawling_orm = Table('urls_to_crawling_orm', metadata, autoload_with=engine)
-
+pricing_products_orm = Table('pricing_products_orm', metadata, autoload_with=engine)
+product_content_orm = Table('product_content_orm', metadata, autoload_with=engine)
 #  common block
 
 
 def clear_table():
     try:
         with engine.connect() as connection:
-            connection.execute(text("TRUNCATE TABLE site_tree RESTART IDENTITY CASCADE"))
+            connection.execute(text("TRUNCATE TABLE siteset_orm RESTART IDENTITY CASCADE"))
             connection.commit()
-            logger.info('Table site_tree cleared.')
+            logger.info('Table siteset_orm cleared.')
     except Exception as e:
         logger.error(f"Error while clearing table: {str(e)}")
 
@@ -195,7 +196,7 @@ def remove_duplicates():
         session.close()  # Закрываем сессию
 
 
-# Pricing block
+# Pricing (add urls) block
 def select_all_from_site_set_two():
     today = date.today()
     try:
@@ -209,7 +210,6 @@ def select_all_from_site_set_two():
         print(f"Error while executing SELECT query: {str(e)}")
     return records
 
-# print(select_all_from_site_set_two())
 
 def insert_to_urls_to_crawling_orm(name, url, dt):
     try:
@@ -327,3 +327,168 @@ def remove_duplicates_urls_to_crawling_orm():
         session.close()  # Закрываем сессию
 
 
+# Pricing  block
+def select_all_from_urls_to_crawling_orm():
+    try:
+        with engine.connect() as connection:
+            stmt = select(UrlsToCrawling.pricing_url)
+            result = connection.execute(stmt)
+            records = result.fetchall()
+    except Exception as e:
+        print(f"Error while executing SELECT query: {str(e)}")
+    return records
+
+def insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion):
+    try:
+        with engine.connect() as connection:
+            insert_stmt = insert(pricing_products_orm).values(
+                sku=sku,
+                name=products_title,
+                price = price,
+                stock = stock,
+                product_url=url,
+                date=date_of_insertion
+            )
+            connection.execute(insert_stmt)
+            connection.commit()
+            logger.info(f'Data inserted: {sku},  {products_title}')
+    except Exception as e:
+        connection.rollback()
+        logger.error(f"Error while inserting data: {str(e)}")
+
+def remove_duplicates_pricing_products_orm():
+    session = SessionLocal()
+    try:
+        # Подзапрос для получения id дубликатов
+        subquery = (
+            select(
+                PricingProducts.id,
+                func.row_number().over(partition_by=[PricingProducts.sku, PricingProducts.date]).label('rownum')
+            )
+            .subquery()
+        )
+
+        # Запрос на удаление дубликатов
+        delete_stmt = delete(PricingProducts).where(
+            PricingProducts.id.in_(
+                select(subquery.c.id).where(subquery.c.rownum > 1)
+            )
+        )
+
+        # Выполнение запроса на удаление
+        result = session.execute(delete_stmt)
+        session.commit()  # Сохраняем изменения
+
+        logging.info(f"Removed {result.rowcount} duplicate records.")
+
+    except Exception as e:
+        session.rollback()  # Откат транзакции в случае ошибки
+        logging.error(f"Error while removing duplicates: {str(e)}")
+    finally:
+        session.close()  # Закрываем сессию
+
+def find_duplicates_pricing_products_orm():
+    session = SessionLocal()
+    try:
+        # Создаем запрос для поиска дубликатов
+        duplicates_stmt = select(
+            PricingProducts.sku,
+            PricingProducts.date,
+            func.count().label('count')
+        ).group_by(
+            PricingProducts.sku,
+            PricingProducts.date
+        ).having(func.count() > 1)
+
+        # Выполняем запрос
+        duplicates = session.execute(duplicates_stmt).fetchall()
+
+        if duplicates:
+            for dup in duplicates:
+                print(f"Category URL: {dup.sku}, Date: {dup.date}, Count: {dup.count}")
+        else:
+            print("No duplicates found.")
+
+    except Exception as e:
+        print(f"Error while finding duplicates: {str(e)}")
+    finally:
+        session.close()  # Закрываем сессию
+
+
+
+# PC block
+def insert_to_urls_to_product_content_orm(sku, title, number_of_images, best_before_date, characteristic, date_of_insertion):
+    try:
+        with engine.connect() as connection:
+            insert_stmt = insert(product_content_orm).values(
+                sku=sku,
+                title=title,
+                number_of_images=number_of_images,
+                best_before_date=best_before_date,
+                characteristic=characteristic,
+                date=date_of_insertion
+            )
+            connection.execute(insert_stmt)
+            connection.commit()
+            logger.info(f'Data inserted: {sku},  {title}')
+    except Exception as e:
+        connection.rollback()
+        logger.error(f"Error while inserting data: {str(e)}")
+
+def remove_duplicates_product_content_orm():
+    session = SessionLocal()
+    try:
+        # Подзапрос для получения id дубликатов
+        subquery = (
+            select(
+                ProductContent.id,
+                func.row_number().over(partition_by=[ProductContent.sku, ProductContent.date]).label('rownum')
+            )
+            .subquery()
+        )
+
+        # Запрос на удаление дубликатов
+        delete_stmt = delete(ProductContent).where(
+            ProductContent.id.in_(
+                select(subquery.c.id).where(subquery.c.rownum > 1)
+            )
+        )
+
+        # Выполнение запроса на удаление
+        result = session.execute(delete_stmt)
+        session.commit()  # Сохраняем изменения
+
+        logging.info(f"Removed {result.rowcount} duplicate records.")
+
+    except Exception as e:
+        session.rollback()  # Откат транзакции в случае ошибки
+        logging.error(f"Error while removing duplicates: {str(e)}")
+    finally:
+        session.close()  # Закрываем сессию
+
+def find_duplicates_product_content_orm():
+    session = SessionLocal()
+    try:
+        # Создаем запрос для поиска дубликатов
+        duplicates_stmt = select(
+            ProductContent.sku,
+            ProductContent.date,
+            func.count().label('count')
+        ).group_by(
+            ProductContent.sku,
+            ProductContent.date
+        ).having(func.count() > 1)
+
+        # Выполняем запрос
+        duplicates = session.execute(duplicates_stmt).fetchall()
+
+        if duplicates:
+            for dup in duplicates:
+                print(f"Category URL: {dup.sku}, Date: {dup.date}, Count: {dup.count}")
+        else:
+            print("No duplicates found.")
+
+    except Exception as e:
+        print(f"Error while finding duplicates: {str(e)}")
+    finally:
+        session.close()  # Закрываем сессию

@@ -6,8 +6,6 @@ import requests
 from bs4 import BeautifulSoup
 from config.config_queries import (select_all_from_site_set, insert_to_ranking_products, find_duplicates,
                                    remove_duplicates)
-from config.db_config import create_connection
-from config.models import RankingProducts
 from config.paths_config import ranking
 from config.time_config import time_format
 
@@ -26,8 +24,6 @@ logging.basicConfig(
 
 
 class RankProds:
-    # def __init__(self, connection):
-    #     self.connection = connection
 
     def get_products_count(self):
         records = select_all_from_site_set()

@@ -25,11 +25,11 @@ class PricingProducts(Base):
     product_url: Mapped[String] = mapped_column(String(4096), nullable=True)
     date: Mapped[datetime] = mapped_column(DateTime, default=datetime.date, nullable=True)
 
-
 class ProductContent(Base):
     __tablename__ = "product_content_orm"
     id: Mapped[int] = mapped_column(Integer, primary_key= True)
-    title: Mapped[int] = mapped_column(Integer, nullable=True)
+    sku: Mapped[int] = mapped_column(Integer, nullable=True)
+    title: Mapped[String] = mapped_column(String, nullable=True)
     number_of_images: Mapped[int] = mapped_column(Integer, nullable=True)
     best_before_date: Mapped[String] = mapped_column(String(32), nullable=True)
     characteristic: Mapped[String] = mapped_column(String, nullable=True)
