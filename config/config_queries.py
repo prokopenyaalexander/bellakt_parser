@@ -331,12 +331,17 @@ def remove_duplicates_urls_to_crawling_orm():
 def select_all_from_urls_to_crawling_orm():
     try:
         with engine.connect() as connection:
-            stmt = select(UrlsToCrawling.pricing_url)
+            today = date.today()
+            stmt = select(UrlsToCrawling.pricing_url).where(
+                and_(func.date(UrlsToCrawling.date) == today)
+            )
             result = connection.execute(stmt)
             records = result.fetchall()
     except Exception as e:
         print(f"Error while executing SELECT query: {str(e)}")
     return records
+
+
 
 def insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion):
     try:

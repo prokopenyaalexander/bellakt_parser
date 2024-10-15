@@ -6,7 +6,6 @@ python-dotenv==1.0.1
 celery==5.4.0
 redis==5.0.8
 flower==2.0.1
-
 pip~=24.2
 wheel~=0.41.2
 tornado~=6.4.1

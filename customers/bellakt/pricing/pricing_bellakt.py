@@ -66,6 +66,6 @@ class Pricing:
         remove_duplicates_pricing_products_orm()
 
 
-# obj = Pricing()
-# obj.get_pricing_details()
+obj = Pricing()
+obj.get_pricing_details()
 
