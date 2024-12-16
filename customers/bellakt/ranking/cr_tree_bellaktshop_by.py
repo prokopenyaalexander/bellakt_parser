@@ -6,20 +6,18 @@ import logging
 import datetime
 from config.paths_config import cr_tree
 from config.headers import header
-from config.time_config import time_format
+
 
 date = datetime.date.today()
-log_directory = cr_tree
+log_directory = cr_tree # ~/Documents/projects/profidata/customers/bellakt/logs/cr_tree_logs'
 os.makedirs(log_directory, exist_ok=True)
 log_file_path = os.path.join(log_directory, f'cr_tree_{date}.log')
 
-logging.basicConfig(
-    filename=log_file_path,
-    level=logging.INFO,
-    filemode='w',
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt=time_format
-)
+logger = logging.getLogger('CRTReelogger')
+logger.setLevel(logging.INFO)
+handler = logging.FileHandler(log_file_path, mode='w')
+handler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
+logger.addHandler(handler)
 
 
 class GetCRTree:
@@ -30,7 +28,7 @@ class GetCRTree:
     def get_cr_tree_categories(self):
         response = requests.get(self.url, headers=header)
         if response.status_code == 200:
-            logging.info(f"URL {self.url} is available status_code - {response.status_code}")
+            logger.info(f"URL {self.url} is available status_code - {response.status_code}")
             soup = BeautifulSoup(response.text, "html.parser")
             categories_tree = []
             links = soup.find_all("div", class_='item_block lg col-lg-20 col-md-4 col-xs-6')
@@ -38,11 +36,11 @@ class GetCRTree:
                 category_name = link.find('span').get_text()
                 category_link = link.find('a').get('href')
                 category_url = 'https://bellaktshop.by' + category_link
-                logging.info(f"Current category {category_name}, URL - {category_url} added to cr_tree")
+                logger.info(f"Current category {category_name}, URL - {category_url} added to cr_tree")
                 subcategories = self.process_cr_tree_category(category_url)
                 categories_tree.append({
                     "name": category_name,
-                    "url": 'https://bellaktshop.by' + category_link,
+                    "url": category_url,
                     "subcategories": subcategories
                 })
             output_directory = os.path.expanduser("~/Documents/projects/profidata/customers/bellakt/ranking/jsons/")
@@ -50,16 +48,15 @@ class GetCRTree:
             file_path = os.path.join(output_directory, f"{datetime.date.today()} - categories_bellaktshop.json")
             with open(file_path, "w") as file:
                 json.dump(categories_tree, file, indent=4)
-                logging.info(f"Categories saved to categories_bellaktshop.json | {file_path}")
+                logger.info(f"Categories saved to categories_bellaktshop.json | {file_path}")
             return file_path
         else:
-            logging.error(f"URL {self.url} is unavailable {response.status_code}")
+            logger.error(f"URL {self.url} is unavailable {response.status_code}")
         return True
 
     def process_cr_tree_category(self, category_url, visited_categories=None):
-        if visited_categories is None:
-            visited_categories = set()
-        logging.info(f"Processing category: {category_url} ")
+        visited_categories = set()
+        logger.info(f"Processing category: {category_url} ")
         response = requests.get(category_url, headers=header)
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
@@ -81,13 +78,13 @@ class GetCRTree:
                                 "subcategories": self.process_cr_tree_category(subcategory_url, visited_categories)
                             }
                             subcategories.append(subcategory)
-                            logging.info(f"Added subcategory: {subcategory_name}")
+                            logger.info(f"Added subcategory: {subcategory_name}")
             return subcategories
         else:
-            logging.error(f"URL {category_url} is unavailable {response.status_code}")
+            logger.error(f"URL {category_url} is unavailable {response.status_code}")
 
 
-# main_url = "https://bellaktshop.by/catalog"
-#
-# obj = GetCRTree(main_url)
-# obj.get_cr_tree_categories()
+main_url = "https://bellaktshop.by/catalog"
+
+obj = GetCRTree(main_url)
+obj.get_cr_tree_categories()

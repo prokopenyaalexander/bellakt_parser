@@ -6,20 +6,17 @@ from bs4 import BeautifulSoup
 from config.config_queries import (insert_to_urls_to_crawling_orm, select_all_from_site_set_two,
                                    remove_duplicates_urls_to_crawling_orm, find_duplicates_urls_to_crawling_orm)
 from config.paths_config import urls_to_pricing_module
-from config.time_config import time_format
 
-log_directory = urls_to_pricing_module
+log_directory = urls_to_pricing_module # ~/Documents/projects/profidata/customers/bellakt/logs/urls_to_pricing_module_logs
 os.makedirs(log_directory, exist_ok=True)
 date = datetime.date.today()
 log_file_path = os.path.join(log_directory, f'urls_to_pricing_module_{date}.log')
 
-logging.basicConfig(
-    filename=log_file_path,
-    level=logging.INFO,
-    filemode='w',
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt=time_format
-)
+logger = logging.getLogger('AddUrlslogger')
+logger.setLevel(logging.INFO)
+handler = logging.FileHandler(log_file_path, mode='w')
+handler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
+logger.addHandler(handler)
 
 class UrlsToCrawl:
 
@@ -35,8 +32,8 @@ class UrlsToCrawl:
             else:
                 self.process_single_page_data(url)
 
-
-    def process_multiple_pages_data(self, url, number_of_pages):
+    @staticmethod
+    def process_multiple_pages_data(url, number_of_pages):
         base_category_url = url
         page_param = f'?PAGEN_1='
         response = requests.get(base_category_url)
@@ -50,22 +47,23 @@ class UrlsToCrawl:
             soup = BeautifulSoup(response.text, "html.parser")
             products_links = soup.find_all("div", class_='inner_wrap TYPE_1')
             for link in products_links:
+
                 product_link = 'https://bellaktshop.by' + link.find('a').get('href')
                 pricing_urls.append(product_link)
-                logging.info(f'Product link: {product_link} - added| BASEURL {base_category_url}')
 
         if pricing_urls:
             date_of_insertion = datetime.date.today()
             try:
                 for url in pricing_urls:
                     insert_to_urls_to_crawling_orm(url, category_name, date_of_insertion)
+                    logger.info(f'url: {url} - added')
             except Exception as e:
-                logging.error(f"Error inserting data in process_multiple_pages_data: {e}")
-            logging.info("Data insertion completed in process_multiple_pages_data.")
+                logger.error(f"Error inserting data in process_multiple_pages_data: {e}")
+            logger.info("Data insertion completed in process_multiple_pages_data.")
 
 
-
-    def process_single_page_data(self, url):
+    @staticmethod
+    def process_single_page_data(url):
         base_category_url = url
         response = requests.get(base_category_url)
         soup = BeautifulSoup(response.text, "html.parser")
@@ -75,21 +73,24 @@ class UrlsToCrawl:
         for link in products_links:
             product_link = 'https://bellaktshop.by' + link.find('a').get('href')
             pricing_urls.append(product_link)
-            logging.info(f'Product link: {product_link} - added| BASEURL {base_category_url}')
+            logger.info(f'Product link: {product_link} - added| BASEURL {base_category_url}')
 
         if pricing_urls:
             date_of_insertion = datetime.date.today()
             for url in pricing_urls:
                 pricing_url = url
                 insert_to_urls_to_crawling_orm(pricing_url, category_name, date_of_insertion)
+                logger.info(f'url: {url} - added')
         else:
-            logging.info(f"{pricing_urls}, EMPTY, {url}.")
-        logging.info("Data insertion completed in process_single_page_data.")
+            logger.info(f"{pricing_urls}, EMPTY, {url}.")
+        logger.info("Data insertion completed in process_single_page_data.")
 
-    def find_duplicates(self):
+    @staticmethod
+    def find_duplicates():
         find_duplicates_urls_to_crawling_orm()
 
-    def remove_duplicates(self):
+    @staticmethod
+    def remove_duplicates():
         remove_duplicates_urls_to_crawling_orm()
 
 obj = UrlsToCrawl()

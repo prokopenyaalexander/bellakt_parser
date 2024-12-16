@@ -26,7 +26,8 @@ logging.basicConfig(
 
 class PC:
 
-    def get_pc_details(self):
+    @classmethod
+    def get_pc_details(cls):
         records = select_all_from_urls_to_crawling_orm()
         best_before_date = None  # срок годности
         for row in records:
@@ -42,8 +43,7 @@ class PC:
             sku = re.findall(pattern, row[0])[0]  # находим id продукта
             products_title = soup.find("div", class_="topic__heading").find("h1").get_text()  # находим имя продукта
             number_of_images = len([soup.find("div", class_="product-detail-gallery__item product-detail-gallery__item--"
-                                                            "middle text-center").find("a").get("href")])  # находим кол-во
-            # картинок продукта
+                                                            "middle text-center").find("a").get("href")])  # находим кол-во картинок продукта
 
             title_best_before_date_element = soup.find('p', class_='title', string='Срок годности')  # срок годности
             if title_best_before_date_element:
@@ -68,10 +68,11 @@ class PC:
                                                   json.dumps(data), date_of_insertion)
         logging.info("Data insertion completed.")
 
-    def find_duplicates(self):
+    @classmethod
+    def find_duplicates(cls):
         find_duplicates_product_content_orm()
-
-    def remove_duplicates(self):
+    @classmethod
+    def remove_duplicates(cls):
         remove_duplicates_product_content_orm()
 
 obj=PC()

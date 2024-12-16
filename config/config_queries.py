@@ -10,7 +10,6 @@ from config.paths_config import queries_log_directory
 # from orm_core import create_connection
 
 
-
 date = datetime.date.today()
 log_directory = queries_log_directory
 os.makedirs(log_directory, exist_ok=True)
@@ -31,9 +30,8 @@ ranking_products_orm = Table('ranking_products_orm', metadata, autoload_with=eng
 urls_to_crawling_orm = Table('urls_to_crawling_orm', metadata, autoload_with=engine)
 pricing_products_orm = Table('pricing_products_orm', metadata, autoload_with=engine)
 product_content_orm = Table('product_content_orm', metadata, autoload_with=engine)
+
 #  common block
-
-
 def clear_table():
     try:
         with engine.connect() as connection:
@@ -41,24 +39,21 @@ def clear_table():
             connection.commit()
             logger.info('Table siteset_orm cleared.')
     except Exception as e:
-        logger.error(f"Error while clearing table: {str(e)}")
+        print(f"Error while clearing table: {str(e)}")
 
 #  site_set block
-
-def write_to_db_site_set(name, url, created_at):
+def insert_to_db_site_set(name, url, created_at):
     try:
         with engine.connect() as connection:
             # Создаем запрос на вставку
             insert_stmt = insert(siteset_orm).values(name=name, url=url, created_at=created_at)
             connection.execute(insert_stmt)
             connection.commit()
-            logger.info(f'Data inserted: {name}, {url}, {created_at}')
     except Exception as e:
         connection.rollback()
-        logger.error(f"Error while inserting data: {str(e)}")
+        print(f"Error while inserting data: {str(e)}")
 
 #  get_count_ranking_products block
-
 def select_all_from_site_set():
     try:
         with engine.connect() as connection:
@@ -139,41 +134,39 @@ SessionLocal = sessionmaker(bind=engine)
 def find_duplicates():
     session = SessionLocal()
     try:
-        # Создаем запрос для поиска дубликатов
+        # Создаем запрос для поиска дубликатов, используя функцию func для вызова PostgreSQL функции DATE
         duplicates_stmt = select(
             RankingProducts.category_url,
-            RankingProducts.date,
+            func.date(RankingProducts.date).label('date'),  # Используем func.date для извлечения только даты
             func.count().label('count')
         ).group_by(
             RankingProducts.category_url,
-            RankingProducts.date
+            func.date(RankingProducts.date)  # Группируем по дате без времени
         ).having(func.count() > 1)
-
         # Выполняем запрос
         duplicates = session.execute(duplicates_stmt).fetchall()
 
         if duplicates:
             for dup in duplicates:
-                print(f"Category URL: {dup.category_url}, Date: {dup.date}, Count: {dup.count}")
+                print(f"Category URL count_records_in_ranking_products: {dup.category_url}, Date: {dup.date}, Count: {dup.count}")
         else:
             print("No duplicates found.")
-
-    except Exception as e:
-        print(f"Error while finding duplicates: {str(e)}")
     finally:
-        session.close()  # Закрываем сессию
+        session.close()
 
 # функция удаления дубликатов
 def remove_duplicates():
     session = SessionLocal()
     try:
-        # Подзапрос для получения id дубликатов
+        # Подзапрос для получения id дубликатов, группируя по дате без времени
         subquery = (
             select(
                 RankingProducts.id,
-                func.row_number().over(partition_by=[RankingProducts.category_url, RankingProducts.date]).label('rownum')
+                func.row_number().over(
+                    partition_by=[RankingProducts.category_url, func.date(RankingProducts.date)]
+                ).label('rownum')
             )
-            .subquery()
+           .subquery()
         )
 
         # Запрос на удаление дубликатов
@@ -221,10 +214,11 @@ def insert_to_urls_to_crawling_orm(name, url, dt):
             )
             connection.execute(insert_stmt)
             connection.commit()
-            logger.info(f'Data inserted: {name},  {url}')
+            # logger.info(f'Data inserted: {name},  {url}')
     except Exception as e:
         connection.rollback()
-        logger.error(f"Error while inserting data: {str(e)}")
+        print(e)
+        # logger.error(f"Error while inserting data: {str(e)}")
 
 # функция обновления записей
 def udp_record_in_urls_to_crawling_orm(name, cnt_products, url, dt):
@@ -284,8 +278,7 @@ def find_duplicates_urls_to_crawling_orm():
         duplicates = session.execute(duplicates_stmt).fetchall()
 
         if duplicates:
-            for dup in duplicates:
-                print(f"Category URL: {dup.pricing_url}, Date: {dup.date}, Count: {dup.count}")
+            print(f"Duplicates found {duplicates}")
         else:
             print("No duplicates found.")
 
@@ -341,8 +334,6 @@ def select_all_from_urls_to_crawling_orm():
         print(f"Error while executing SELECT query: {str(e)}")
     return records
 
-
-
 def insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion):
     try:
         with engine.connect() as connection:
@@ -356,10 +347,10 @@ def insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, ur
             )
             connection.execute(insert_stmt)
             connection.commit()
-            logger.info(f'Data inserted: {sku},  {products_title}')
+            # logger.info(f'Data inserted: {sku},  {products_title}')
     except Exception as e:
         connection.rollback()
-        logger.error(f"Error while inserting data: {str(e)}")
+        print(f"Error while inserting data: {str(e)}")
 
 def remove_duplicates_pricing_products_orm():
     session = SessionLocal()
@@ -409,8 +400,7 @@ def find_duplicates_pricing_products_orm():
         duplicates = session.execute(duplicates_stmt).fetchall()
 
         if duplicates:
-            for dup in duplicates:
-                print(f"Category URL: {dup.sku}, Date: {dup.date}, Count: {dup.count}")
+            print(f"Duplicates found {duplicates}")
         else:
             print("No duplicates found.")
 
@@ -489,7 +479,7 @@ def find_duplicates_product_content_orm():
 
         if duplicates:
             for dup in duplicates:
-                print(f"Category URL: {dup.sku}, Date: {dup.date}, Count: {dup.count}")
+                print(f"Category URL find_duplicates_product_content_orm: {dup.sku}, Date: {dup.date}, Count: {dup.count}")
         else:
             print("No duplicates found.")
 
