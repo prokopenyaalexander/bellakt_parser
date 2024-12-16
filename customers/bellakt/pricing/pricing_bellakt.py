@@ -4,8 +4,11 @@ import os
 import re
 import requests
 from bs4 import BeautifulSoup
-from config.config_queries import select_all_from_urls_to_crawling_orm, insert_to_urls_to_pricing_products_orm, \
-    remove_duplicates_pricing_products_orm, find_duplicates_pricing_products_orm
+from sqlalchemy import insert, select, and_, func, delete
+from sqlalchemy.orm import sessionmaker
+from config.config_queries import pricing_products_orm, SessionLocal
+from config.models import UrlsToCrawling, PricingProducts
+from config.orm_core import engine
 from config.paths_config import pricing_log_directory
 
 
@@ -20,16 +23,17 @@ handler = logging.FileHandler(log_file_path, mode='w')
 handler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
 logger.addHandler(handler)
 
+Session = sessionmaker(bind=engine)
+
 
 class Pricing:
 
-    @staticmethod
-    def get_pricing_details():
-        records = select_all_from_urls_to_crawling_orm()
+    def get_pricing_details(self):
+        records = self.select_all_from_urls_to_crawling_orm()
         for row in records:
-            logger.info(f"Working with {row[0]} category.")
+            logger.info(f"Working with {row[0]} url of category.")
             try:
-                response = requests.get(row[0])
+                response = requests.get(row[0], timeout=5)
                 response.raise_for_status()
             except requests.RequestException as e:
                 logger.error(f"Error fetching URL {row[0]}: {e}")
@@ -48,20 +52,109 @@ class Pricing:
                 stock = "OOS"
             url = row[0]  # потому что, нужно использовать параметризацию.
             date_of_insertion = datetime.date.today()
-            insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion)
-    logger.info(f"Finished work")
+            self.insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion)
+        logger.info(f"Finished work")
+        if self.find_duplicates_pricing_products_orm():
+            self.remove_duplicates_pricing_products_orm()
+            logger.info(f"Duplicates found")
+
 
     @staticmethod
-    def find_duplicates():
-        find_duplicates_pricing_products_orm()
+    def select_all_from_urls_to_crawling_orm():
+        try:
+            with engine.connect() as connection:
+                today = date.today()
+                stmt = select(UrlsToCrawling.pricing_url).where(
+                    and_(func.date(UrlsToCrawling.date) == today)
+                )
+                result = connection.execute(stmt)
+                records = result.fetchall()
+                logger.info(f"Records have been extracted")
+        except Exception as e:
+            logger.error(f"Error while executing SELECT query: {str(e)}")
+        return records
 
     @staticmethod
-    def remove_duplicates():
-        remove_duplicates_pricing_products_orm()
+    def insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion):
+        try:
+            with engine.connect() as connection:
+                insert_stmt = insert(pricing_products_orm).values(
+                    sku=sku,
+                    name=products_title,
+                    price=price,
+                    stock=stock,
+                    product_url=url,
+                    date=date_of_insertion
+                )
+                connection.execute(insert_stmt)
+                connection.commit()
+                logger.info(f'Data inserted: {sku},  {products_title}, {url}')
+        except Exception as e:
+            connection.rollback()
+            logger.error(f"Error while inserting data: {str(e)}")
+
+
+    @staticmethod
+    def find_duplicates_pricing_products_orm():
+        session = SessionLocal()
+        try:
+            # Создаем запрос для поиска дубликатов
+            duplicates_stmt = select(
+                PricingProducts.sku,
+                PricingProducts.date,
+                func.count().label('count')
+            ).group_by(
+                PricingProducts.sku,
+                PricingProducts.date
+            ).having(func.count() > 1)
+
+            # Выполняем запрос
+            duplicates = session.execute(duplicates_stmt).fetchall()
+
+            # if duplicates:
+            #     logger.info(f"Duplicates found {duplicates}")
+            # else:
+            #     logger.info("No duplicates found.")
+            return duplicates
+        except Exception as e:
+            logger.error(f"Error while finding duplicates: {str(e)}")
+        finally:
+            session.close()  # Закрываем сессию
+
+
+    @staticmethod
+    def remove_duplicates_pricing_products_orm():
+        session = SessionLocal()
+        try:
+            # Подзапрос для получения id дубликатов
+            subquery = (
+                select(
+                    PricingProducts.id,
+                    func.row_number().over(partition_by=[PricingProducts.sku, PricingProducts.date]).label('rownum')
+                )
+                .subquery()
+            )
+
+            # Запрос на удаление дубликатов
+            delete_stmt = delete(PricingProducts).where(
+                PricingProducts.id.in_(
+                    select(subquery.c.id).where(subquery.c.rownum > 1)
+                )
+            )
+
+            # Выполнение запроса на удаление
+            result = session.execute(delete_stmt)
+            session.commit()  # Сохраняем изменения
+
+            logger.info(f"Removed {result.rowcount} duplicate records.")
+
+        except Exception as e:
+            session.rollback()  # Откат транзакции в случае ошибки
+            logger.error(f"Error while removing duplicates: {str(e)}")
+        finally:
+            session.close()  # Закрываем сессию
 
 
 obj = Pricing()
 obj.get_pricing_details()
-obj.find_duplicates()
-obj.remove_duplicates()
 

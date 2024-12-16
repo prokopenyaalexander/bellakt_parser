@@ -321,36 +321,36 @@ def remove_duplicates_urls_to_crawling_orm():
 
 
 # Pricing  block
-def select_all_from_urls_to_crawling_orm():
-    try:
-        with engine.connect() as connection:
-            today = date.today()
-            stmt = select(UrlsToCrawling.pricing_url).where(
-                and_(func.date(UrlsToCrawling.date) == today)
-            )
-            result = connection.execute(stmt)
-            records = result.fetchall()
-    except Exception as e:
-        print(f"Error while executing SELECT query: {str(e)}")
-    return records
+# def select_all_from_urls_to_crawling_orm():
+#     try:
+#         with engine.connect() as connection:
+#             today = date.today()
+#             stmt = select(UrlsToCrawling.pricing_url).where(
+#                 and_(func.date(UrlsToCrawling.date) == today)
+#             )
+#             result = connection.execute(stmt)
+#             records = result.fetchall()
+#     except Exception as e:
+#         print(f"Error while executing SELECT query: {str(e)}")
+#     return records
 
-def insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion):
-    try:
-        with engine.connect() as connection:
-            insert_stmt = insert(pricing_products_orm).values(
-                sku=sku,
-                name=products_title,
-                price = price,
-                stock = stock,
-                product_url=url,
-                date=date_of_insertion
-            )
-            connection.execute(insert_stmt)
-            connection.commit()
-            # logger.info(f'Data inserted: {sku},  {products_title}')
-    except Exception as e:
-        connection.rollback()
-        print(f"Error while inserting data: {str(e)}")
+# def insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion):
+#     try:
+#         with engine.connect() as connection:
+#             insert_stmt = insert(pricing_products_orm).values(
+#                 sku=sku,
+#                 name=products_title,
+#                 price = price,
+#                 stock = stock,
+#                 product_url=url,
+#                 date=date_of_insertion
+#             )
+#             connection.execute(insert_stmt)
+#             connection.commit()
+#             # logger.info(f'Data inserted: {sku},  {products_title}')
+#     except Exception as e:
+#         connection.rollback()
+#         print(f"Error while inserting data: {str(e)}")
 
 def remove_duplicates_pricing_products_orm():
     session = SessionLocal()
@@ -383,31 +383,31 @@ def remove_duplicates_pricing_products_orm():
     finally:
         session.close()  # Закрываем сессию
 
-def find_duplicates_pricing_products_orm():
-    session = SessionLocal()
-    try:
-        # Создаем запрос для поиска дубликатов
-        duplicates_stmt = select(
-            PricingProducts.sku,
-            PricingProducts.date,
-            func.count().label('count')
-        ).group_by(
-            PricingProducts.sku,
-            PricingProducts.date
-        ).having(func.count() > 1)
-
-        # Выполняем запрос
-        duplicates = session.execute(duplicates_stmt).fetchall()
-
-        if duplicates:
-            print(f"Duplicates found {duplicates}")
-        else:
-            print("No duplicates found.")
-
-    except Exception as e:
-        print(f"Error while finding duplicates: {str(e)}")
-    finally:
-        session.close()  # Закрываем сессию
+# def find_duplicates_pricing_products_orm():
+#     session = SessionLocal()
+#     try:
+#         # Создаем запрос для поиска дубликатов
+#         duplicates_stmt = select(
+#             PricingProducts.sku,
+#             PricingProducts.date,
+#             func.count().label('count')
+#         ).group_by(
+#             PricingProducts.sku,
+#             PricingProducts.date
+#         ).having(func.count() > 1)
+#
+#         # Выполняем запрос
+#         duplicates = session.execute(duplicates_stmt).fetchall()
+#
+#         if duplicates:
+#             print(f"Duplicates found {duplicates}")
+#         else:
+#             print("No duplicates found.")
+#
+#     except Exception as e:
+#         print(f"Error while finding duplicates: {str(e)}")
+#     finally:
+#         session.close()  # Закрываем сессию
 
 
 
