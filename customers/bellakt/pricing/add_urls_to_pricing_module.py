@@ -5,8 +5,7 @@ import os
 from bs4 import BeautifulSoup
 from sqlalchemy import select, and_, func, insert, delete
 
-from config.config_queries import (remove_duplicates_urls_to_crawling_orm,
-                                   find_duplicates_urls_to_crawling_orm, urls_to_crawling_orm, SessionLocal)
+from config.config_queries import urls_to_crawling_orm, SessionLocal
 from config.models import SiteSet, UrlsToCrawling
 from config.orm_core import engine
 from config.paths_config import urls_to_pricing_module
@@ -26,6 +25,7 @@ class UrlsToCrawl:
 
     def get_pricing_urls(self):
         records = self.select_all_from_site_set()
+        print(records)
         for row in records:
             url = row[1]
             response = requests.get(url)
@@ -35,7 +35,6 @@ class UrlsToCrawl:
                 self.process_multiple_pages_data(url, number_of_pages)
             else:
                 self.process_single_page_data(url)
-
 
     def process_multiple_pages_data(self, url, number_of_pages):
         base_category_url = url
@@ -64,7 +63,6 @@ class UrlsToCrawl:
             except Exception as e:
                 logger.error(f"Error inserting data in process_multiple_pages_data: {e}")
             logger.info("Data insertion completed in process_multiple_pages_data.")
-
 
     def process_single_page_data(self, url):
         base_category_url = url
