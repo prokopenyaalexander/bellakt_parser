@@ -4,8 +4,10 @@ import os
 import psycopg2
 import requests
 from bs4 import BeautifulSoup
-from config.config_queries import (select_all_from_site_set, insert_to_ranking_products, find_duplicates,
-                                   remove_duplicates)
+from sqlalchemy import select, insert, func, delete
+from config.config_queries import (ranking_products_orm, SessionLocal)
+from config.models import SiteSet, RankingProducts
+from config.orm_core import engine
 from config.paths_config import ranking
 
 
@@ -24,7 +26,7 @@ logger.addHandler(handler)
 class RankProds:
 
     def get_products_count(self):
-        records = select_all_from_site_set()
+        records = self.select_all_from_site_set()
         if records:
             logger.info(f"Data exacted successfully")
         for row in records:
@@ -37,8 +39,8 @@ class RankProds:
             else:
                 self.process_single_page_data(url)
 
-    @staticmethod
-    def process_multiple_pages_data(url, number_of_pages):
+
+    def process_multiple_pages_data(self,url, number_of_pages):
         base_category_url = url
         response = requests.get(base_category_url)
         soup = BeautifulSoup(response.text, "html.parser")
@@ -55,15 +57,15 @@ class RankProds:
             count_of_products += len(products_links)
         try:
             current_time = datetime.datetime.now(datetime.timezone.utc)
-            insert_to_ranking_products(category_name, count_of_products, category_url, current_time)
+            self.insert_to_ranking_products(category_name, count_of_products, category_url, current_time)
             logger.info(f"Inserted data for category_name {category_name}, url - {category_url} "
                              f"count_of_products: {count_of_products} in process_multiple_pages_data")
         except psycopg2.Error as e:
             logger.error(f"Error inserting data in process_multiple_pages_data: {e}")
         logger.info("Data insertion completed in process_multiple_pages_data.")
 
-    @staticmethod
-    def process_single_page_data(url):
+
+    def process_single_page_data(self, url):
         base_category_url = url
         category_url = base_category_url
         response = requests.get(base_category_url)
@@ -72,23 +74,100 @@ class RankProds:
         count_of_products = len(soup.find_all("div", class_='inner_wrap TYPE_1'))
         try:
             current_time = datetime.datetime.now(datetime.timezone.utc)
-            insert_to_ranking_products(category_name, count_of_products, category_url, current_time)
+            self.insert_to_ranking_products(category_name, count_of_products, category_url, current_time)
             logger.info(f"Inserted data for category_name {category_name}, url - {category_url} "
                              f"count_of_products: {count_of_products} in process_single_page_data")
         except psycopg2.Error as e:
             logger.error(f"Error inserting data in process_single_page_data: {e}")
         logger.info("Data insertion completed in process_single_page_data.")
 
-    @classmethod
-    def find_duplicates(cls):
-        find_duplicates()
+    @staticmethod
+    def select_all_from_site_set():
+        try:
+            with engine.connect() as connection:
+                stmt = select(SiteSet.name, SiteSet.url)
+                result = connection.execute(stmt)
+                records = result.fetchall()
+        except Exception as e:
+            print(f"Error while executing SELECT query: {str(e)}")
+        return records
 
-    @classmethod
-    def remove_duplicates(cls):
-        remove_duplicates()
+    @staticmethod
+    def insert_to_ranking_products(name, cnt_products, url, dt):
+        try:
+            with engine.connect() as connection:
+                insert_stmt = insert(ranking_products_orm).values(
+                    category_name=name,
+                    count_of_products=cnt_products,
+                    category_url=url,
+                    date=dt
+                )
+                connection.execute(insert_stmt)
+                connection.commit()
+                logger.info(f'Data inserted: {name}, {cnt_products}, {url}')
+        except Exception as e:
+            connection.rollback()
+            logger.error(f"Error while inserting data: {str(e)}")
 
+    # @staticmethod
+    # def find_duplicates():
+    #     session = SessionLocal()
+    #     try:
+    #         # Создаем запрос для поиска дубликатов, используя функцию func для вызова PostgreSQL функции DATE
+    #         duplicates_stmt = select(
+    #             RankingProducts.category_url,
+    #             func.date(RankingProducts.date).label('date'),  # Используем func.date для извлечения только даты
+    #             func.count().label('count')
+    #         ).group_by(
+    #             RankingProducts.category_url,
+    #             func.date(RankingProducts.date)  # Группируем по дате без времени
+    #         ).having(func.count() > 1)
+    #         # Выполняем запрос
+    #         duplicates = session.execute(duplicates_stmt).fetchall()
+    #
+    #         if duplicates:
+    #             for dup in duplicates:
+    #                 print(
+    #                     f"Category URL count_records_in_ranking_products: {dup.category_url}, Date: {dup.date}, Count: {dup.count}")
+    #         else:
+    #             print("No duplicates found.")
+    #     finally:
+    #         session.close()
+
+    @staticmethod
+    def remove_duplicates():
+        session = SessionLocal()
+        try:
+            # Подзапрос для получения id дубликатов, группируя по дате без времени
+            subquery = (
+                select(
+                    RankingProducts.id,
+                    func.row_number().over(
+                        partition_by=[RankingProducts.category_url, func.date(RankingProducts.date)]
+                    ).label('rownum')
+                )
+                .subquery()
+            )
+
+            # Запрос на удаление дубликатов
+            delete_stmt = delete(RankingProducts).where(
+                RankingProducts.id.in_(
+                    select(subquery.c.id).where(subquery.c.rownum > 1)
+                )
+            )
+
+            # Выполнение запроса на удаление
+            result = session.execute(delete_stmt)
+            session.commit()  # Сохраняем изменения
+
+            logger.info(f"Removed {result.rowcount} duplicate records.")
+
+        except Exception as e:
+            session.rollback()  # Откат транзакции в случае ошибки
+            logger.error(f"Error while removing duplicates: {str(e)}")
+        finally:
+            session.close()  # Закрываем сессию
 
 obj = RankProds()
 obj.get_products_count()
-obj.find_duplicates()
 obj.remove_duplicates()

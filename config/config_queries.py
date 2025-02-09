@@ -31,139 +31,21 @@ urls_to_crawling_orm = Table('urls_to_crawling_orm', metadata, autoload_with=eng
 pricing_products_orm = Table('pricing_products_orm', metadata, autoload_with=engine)
 product_content_orm = Table('product_content_orm', metadata, autoload_with=engine)
 
+SessionLocal = sessionmaker(bind=engine)
 
-def select_all_from_site_set():
-    try:
-        with engine.connect() as connection:
-            stmt = select(SiteSet.name, SiteSet.url)
-            result = connection.execute(stmt)
-            records = result.fetchall()
-    except Exception as e:
-        print(f"Error while executing SELECT query: {str(e)}")
-    return records
-
-def select_all_from_ranking_products():
-    try:
-        with engine.connect() as connection:
-            stmt = select(RankingProducts.category_name, RankingProducts.date)
-            result = connection.execute(stmt)
-            records = result.fetchall()
-    except Exception as e:
-        print(f"Error while executing SELECT query: {str(e)}")
-    return records
-
-def insert_to_ranking_products(name, cnt_products, url, dt):
-    try:
-        with engine.connect() as connection:
-            insert_stmt = insert(ranking_products_orm).values(
-                category_name=name,
-                count_of_products=cnt_products,
-                category_url=url,
-                date=dt
-            )
-            connection.execute(insert_stmt)
-            connection.commit()
-            logger.info(f'Data inserted: {name}, {cnt_products}, {url}')
-    except Exception as e:
-        connection.rollback()
-        logger.error(f"Error while inserting data: {str(e)}")
-
-# функция обновления записей
-def udp_record_in_ranking_products(name, cnt_products, url, dt):
-    try:
-        with (engine.connect() as connection):
-            update_stmt = (
-            update(RankingProducts)
-            .where(
-                (RankingProducts.category_name == name) &
-                (RankingProducts.date == dt)
-            )
-            .values(
-                category_name=name,
-                count_of_products=cnt_products,
-                category_url=url,
-                date=dt
-                )
-            )
-            connection.execute(update_stmt)
-            connection.commit()
-            logger.info(f'Data updated: {name}, {cnt_products}, {url}')
-    except Exception as e:
-        connection.rollback()
-        logger.error(f"Error while inserting data: {str(e)}")
-
-# функция удаления дубликатов
-def count_records_in_ranking_products(category_name, date_of_insertion):
-    try:
-        with engine.connect() as connection:
-            # Создаем запрос для подсчета записей
-            stmt = select(func.count()).filter(
-                (RankingProducts.category_name == category_name) &
-                (RankingProducts.date == date_of_insertion)
-            )
-            result = connection.execute(stmt)
-
-    except Exception as e:
-        print(f"Error while executing SELECT COUNT query: {str(e)}")
-        return  result
+# def select_all_from_ranking_products():
+#     try:
+#         with engine.connect() as connection:
+#             stmt = select(RankingProducts.category_name, RankingProducts.date)
+#             result = connection.execute(stmt)
+#             records = result.fetchall()
+#     except Exception as e:
+#         print(f"Error while executing SELECT query: {str(e)}")
+#     return records
 
 # функция поиска дубликатов
-SessionLocal = sessionmaker(bind=engine)
-def find_duplicates():
-    session = SessionLocal()
-    try:
-        # Создаем запрос для поиска дубликатов, используя функцию func для вызова PostgreSQL функции DATE
-        duplicates_stmt = select(
-            RankingProducts.category_url,
-            func.date(RankingProducts.date).label('date'),  # Используем func.date для извлечения только даты
-            func.count().label('count')
-        ).group_by(
-            RankingProducts.category_url,
-            func.date(RankingProducts.date)  # Группируем по дате без времени
-        ).having(func.count() > 1)
-        # Выполняем запрос
-        duplicates = session.execute(duplicates_stmt).fetchall()
 
-        if duplicates:
-            for dup in duplicates:
-                print(f"Category URL count_records_in_ranking_products: {dup.category_url}, Date: {dup.date}, Count: {dup.count}")
-        else:
-            print("No duplicates found.")
-    finally:
-        session.close()
 
-# функция удаления дубликатов
-def remove_duplicates():
-    session = SessionLocal()
-    try:
-        # Подзапрос для получения id дубликатов, группируя по дате без времени
-        subquery = (
-            select(
-                RankingProducts.id,
-                func.row_number().over(
-                    partition_by=[RankingProducts.category_url, func.date(RankingProducts.date)]
-                ).label('rownum')
-            )
-           .subquery()
-        )
 
-        # Запрос на удаление дубликатов
-        delete_stmt = delete(RankingProducts).where(
-            RankingProducts.id.in_(
-                select(subquery.c.id).where(subquery.c.rownum > 1)
-            )
-        )
-
-        # Выполнение запроса на удаление
-        result = session.execute(delete_stmt)
-        session.commit()  # Сохраняем изменения
-
-        logging.info(f"Removed {result.rowcount} duplicate records.")
-
-    except Exception as e:
-        session.rollback()  # Откат транзакции в случае ошибки
-        logging.error(f"Error while removing duplicates: {str(e)}")
-    finally:
-        session.close()  # Закрываем сессию
 
 

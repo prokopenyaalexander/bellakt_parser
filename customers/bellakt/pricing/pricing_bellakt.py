@@ -90,7 +90,6 @@ class Pricing:
             connection.rollback()
             logger.error(f"Error while inserting data: {str(e)}")
 
-
     @staticmethod
     def remove_duplicates_pricing_products_orm():
         session = SessionLocal()
