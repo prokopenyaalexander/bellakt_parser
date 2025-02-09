@@ -46,7 +46,7 @@ class GetCRTree:
             output_directory = os.path.expanduser("~/Documents/projects/profidata/customers/bellakt/ranking/jsons/")
             os.makedirs(output_directory, exist_ok=True)
             file_path = os.path.join(output_directory, f"{datetime.date.today()} - categories_bellaktshop.json")
-            with open(file_path, "w") as file:
+            with open(file_path, "w", encoding="utf-8") as file:
                 json.dump(categories_tree, file, indent=4)
                 logger.info(f"Categories saved to categories_bellaktshop.json | {file_path}")
             return file_path
@@ -55,7 +55,8 @@ class GetCRTree:
         return True
 
     def process_cr_tree_category(self, category_url, visited_categories=None):
-        visited_categories = set()
+        if visited_categories is None:
+            visited_categories = set()
         logger.info(f"Processing category: {category_url} ")
         response = requests.get(category_url, headers=header)
         if response.status_code == 200:

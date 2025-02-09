@@ -25,7 +25,6 @@ class UrlsToCrawl:
 
     def get_pricing_urls(self):
         records = self.select_all_from_site_set()
-        print(records)
         for row in records:
             url = row[1]
             response = requests.get(url)
@@ -55,7 +54,7 @@ class UrlsToCrawl:
                 pricing_urls.append(product_link)
 
         if pricing_urls:
-            date_of_insertion = datetime.date.today()
+            date_of_insertion = datetime.datetime.now(datetime.timezone.utc)
             try:
                 for url in pricing_urls:
                     self.insert_to_urls_to_crawling_orm(url, category_name, date_of_insertion)
@@ -77,7 +76,8 @@ class UrlsToCrawl:
             logger.info(f'Product link: {product_link} - added| BASEURL {base_category_url}')
 
         if pricing_urls:
-            date_of_insertion = datetime.date.today()
+            date_of_insertion = datetime.datetime.now(datetime.timezone.utc)
+
             for url in pricing_urls:
                 pricing_url = url
                 self.insert_to_urls_to_crawling_orm(pricing_url, category_name, date_of_insertion)
@@ -118,34 +118,6 @@ class UrlsToCrawl:
             logger.error(f"Error while inserting data: {str(e)}")
 
     @staticmethod
-    def find_duplicates_urls_to_crawling_orm():
-        session = SessionLocal()
-        try:
-            # Создаем запрос для поиска дубликатов
-            duplicates_stmt = select(
-                UrlsToCrawling.pricing_url,
-                UrlsToCrawling.date,
-                func.count().label('count')
-            ).group_by(
-                UrlsToCrawling.pricing_url,
-                UrlsToCrawling.date
-            ).having(func.count() > 1)
-
-            # Выполняем запрос
-            duplicates = session.execute(duplicates_stmt).fetchall()
-
-            # if duplicates:
-            #     print(f"Duplicates found {duplicates}")
-            # else:
-            #     print("No duplicates found.")
-            return duplicates
-
-        except Exception as e:
-            logger.error(f"Error while finding duplicates: {str(e)}")
-        finally:
-            session.close()  # Закрываем сессию
-
-    @staticmethod
     def remove_duplicates_urls_to_crawling_orm():
         session = SessionLocal()
         try:
@@ -153,16 +125,24 @@ class UrlsToCrawl:
             subquery = (
                 select(
                     UrlsToCrawling.id,
-                    func.row_number().over(partition_by=[UrlsToCrawling.pricing_url, UrlsToCrawling.date]).label(
-                        'rownum')
+                    func.row_number()
+                    .over(
+                        partition_by=[UrlsToCrawling.pricing_url, func.date(UrlsToCrawling.date)],
+                        order_by=UrlsToCrawling.id  # Определяем порядок для ROW_NUMBER()
+                    ).label('rownum')
                 )
+                .filter(UrlsToCrawling.pricing_url.isnot(None))  # Исключаем записи с NULL в pricing_url
+                .filter(UrlsToCrawling.date.isnot(None))  # Исключаем записи с NULL в date
                 .subquery()
             )
 
             # Запрос на удаление дубликатов
-            delete_stmt = delete(UrlsToCrawling).where(
-                UrlsToCrawling.id.in_(
-                    select(subquery.c.id).where(subquery.c.rownum > 1)
+            delete_stmt = (
+                delete(UrlsToCrawling)
+                .where(
+                    UrlsToCrawling.id.in_(
+                        select(subquery.c.id).where(subquery.c.rownum > 1)
+                    )
                 )
             )
 
@@ -180,4 +160,5 @@ class UrlsToCrawl:
 
 obj = UrlsToCrawl()
 obj.get_pricing_urls()
+obj.remove_duplicates_urls_to_crawling_orm()
 

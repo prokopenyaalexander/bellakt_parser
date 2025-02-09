@@ -51,21 +51,18 @@ class Pricing:
             else:
                 stock = "OOS"
             url = row[0]  # потому что, нужно использовать параметризацию.
-            date_of_insertion = datetime.date.today()
+            date_of_insertion = datetime.datetime.now(datetime.timezone.utc)
             self.insert_to_urls_to_pricing_products_orm(sku, products_title, price, stock, url, date_of_insertion)
         logger.info(f"Finished work")
-        if self.find_duplicates_pricing_products_orm():
-            self.remove_duplicates_pricing_products_orm()
-            logger.info(f"Duplicates found")
-
 
     @staticmethod
     def select_all_from_urls_to_crawling_orm():
         try:
             with engine.connect() as connection:
                 today = date.today()
+
                 stmt = select(UrlsToCrawling.pricing_url).where(
-                    and_(func.date(UrlsToCrawling.date) == today)
+                    func.date(UrlsToCrawling.date) == today
                 )
                 result = connection.execute(stmt)
                 records = result.fetchall()
@@ -92,34 +89,6 @@ class Pricing:
         except Exception as e:
             connection.rollback()
             logger.error(f"Error while inserting data: {str(e)}")
-
-
-    @staticmethod
-    def find_duplicates_pricing_products_orm():
-        session = SessionLocal()
-        try:
-            # Создаем запрос для поиска дубликатов
-            duplicates_stmt = select(
-                PricingProducts.sku,
-                PricingProducts.date,
-                func.count().label('count')
-            ).group_by(
-                PricingProducts.sku,
-                PricingProducts.date
-            ).having(func.count() > 1)
-
-            # Выполняем запрос
-            duplicates = session.execute(duplicates_stmt).fetchall()
-
-            # if duplicates:
-            #     logger.info(f"Duplicates found {duplicates}")
-            # else:
-            #     logger.info("No duplicates found.")
-            return duplicates
-        except Exception as e:
-            logger.error(f"Error while finding duplicates: {str(e)}")
-        finally:
-            session.close()  # Закрываем сессию
 
 
     @staticmethod

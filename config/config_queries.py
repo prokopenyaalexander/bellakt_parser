@@ -1,6 +1,6 @@
-from sqlalchemy import text, insert, Table, MetaData, select, update, func, delete, and_
-from sqlalchemy.orm import sessionmaker, Session
-from config.models import SiteSet, RankingProducts, UrlsToCrawling, ProductContent, PricingProducts
+from sqlalchemy import insert, Table, MetaData, select, update, func, delete
+from sqlalchemy.orm import sessionmaker
+from config.models import SiteSet, RankingProducts, ProductContent
 from config.orm_core import engine
 import logging
 import datetime
@@ -31,29 +31,7 @@ urls_to_crawling_orm = Table('urls_to_crawling_orm', metadata, autoload_with=eng
 pricing_products_orm = Table('pricing_products_orm', metadata, autoload_with=engine)
 product_content_orm = Table('product_content_orm', metadata, autoload_with=engine)
 
-#  common block
-def clear_table():
-    try:
-        with engine.connect() as connection:
-            connection.execute(text("TRUNCATE TABLE siteset_orm RESTART IDENTITY CASCADE"))
-            connection.commit()
-            logger.info('Table siteset_orm cleared.')
-    except Exception as e:
-        print(f"Error while clearing table: {str(e)}")
 
-#  site_set block
-def insert_to_db_site_set(name, url, created_at):
-    try:
-        with engine.connect() as connection:
-            # Создаем запрос на вставку
-            insert_stmt = insert(siteset_orm).values(name=name, url=url, created_at=created_at)
-            connection.execute(insert_stmt)
-            connection.commit()
-    except Exception as e:
-        connection.rollback()
-        print(f"Error while inserting data: {str(e)}")
-
-#  get_count_ranking_products block
 def select_all_from_site_set():
     try:
         with engine.connect() as connection:
@@ -188,79 +166,4 @@ def remove_duplicates():
     finally:
         session.close()  # Закрываем сессию
 
-# PC block
-def insert_to_urls_to_product_content_orm(sku, title, number_of_images, best_before_date, characteristic, date_of_insertion):
-    try:
-        with engine.connect() as connection:
-            insert_stmt = insert(product_content_orm).values(
-                sku=sku,
-                title=title,
-                number_of_images=number_of_images,
-                best_before_date=best_before_date,
-                characteristic=characteristic,
-                date=date_of_insertion
-            )
-            connection.execute(insert_stmt)
-            connection.commit()
-            logger.info(f'Data inserted: {sku},  {title}')
-    except Exception as e:
-        connection.rollback()
-        logger.error(f"Error while inserting data: {str(e)}")
 
-def remove_duplicates_product_content_orm():
-    session = SessionLocal()
-    try:
-        # Подзапрос для получения id дубликатов
-        subquery = (
-            select(
-                ProductContent.id,
-                func.row_number().over(partition_by=[ProductContent.sku, ProductContent.date]).label('rownum')
-            )
-            .subquery()
-        )
-
-        # Запрос на удаление дубликатов
-        delete_stmt = delete(ProductContent).where(
-            ProductContent.id.in_(
-                select(subquery.c.id).where(subquery.c.rownum > 1)
-            )
-        )
-
-        # Выполнение запроса на удаление
-        result = session.execute(delete_stmt)
-        session.commit()  # Сохраняем изменения
-
-        logging.info(f"Removed {result.rowcount} duplicate records.")
-
-    except Exception as e:
-        session.rollback()  # Откат транзакции в случае ошибки
-        logging.error(f"Error while removing duplicates: {str(e)}")
-    finally:
-        session.close()  # Закрываем сессию
-
-def find_duplicates_product_content_orm():
-    session = SessionLocal()
-    try:
-        # Создаем запрос для поиска дубликатов
-        duplicates_stmt = select(
-            ProductContent.sku,
-            ProductContent.date,
-            func.count().label('count')
-        ).group_by(
-            ProductContent.sku,
-            ProductContent.date
-        ).having(func.count() > 1)
-
-        # Выполняем запрос
-        duplicates = session.execute(duplicates_stmt).fetchall()
-
-        if duplicates:
-            for dup in duplicates:
-                print(f"Category URL find_duplicates_product_content_orm: {dup.sku}, Date: {dup.date}, Count: {dup.count}")
-        else:
-            print("No duplicates found.")
-
-    except Exception as e:
-        print(f"Error while finding duplicates: {str(e)}")
-    finally:
-        session.close()  # Закрываем сессию

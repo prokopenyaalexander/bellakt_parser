@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import String, Integer, DateTime, Float
+from sqlalchemy import String, Integer, DateTime, Float, Date
 from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase, Mapped, mapped_column
 from config.orm_core import engine
 
@@ -50,7 +50,7 @@ class UrlsToCrawling(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key= True)
     pricing_url: Mapped[String] = mapped_column(String, nullable=True)
     category_url: Mapped[String] = mapped_column(String, nullable=True)
-    date: Mapped[datetime] = mapped_column(DateTime, default=datetime.date, nullable=True)
+    date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
 
 

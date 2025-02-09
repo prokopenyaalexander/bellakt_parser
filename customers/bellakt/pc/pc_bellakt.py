@@ -5,38 +5,38 @@ import os
 import re
 import requests
 from bs4 import BeautifulSoup
-from config.config_queries import select_all_from_urls_to_crawling_orm, insert_to_urls_to_product_content_orm, \
-    remove_duplicates_product_content_orm, find_duplicates_product_content_orm
+from sqlalchemy import select, and_, func, delete, insert
+from config.config_queries import SessionLocal, product_content_orm
+from config.models import UrlsToCrawling, ProductContent
+from config.orm_core import engine
 from config.paths_config import pc_log_directory
-from config.time_config import time_format
 
-log_directory = pc_log_directory
+log_directory = pc_log_directory # ~/Documents/projects/profidata/customers/bellakt/logs/pc_logs
 os.makedirs(log_directory, exist_ok=True)
 date = datetime.date.today()
 log_file_path = os.path.join(log_directory, f'pc_data_{date}.log')
 
 
-logging.basicConfig(
-    filename=log_file_path,
-    level=logging.INFO,
-    filemode='w',
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt=time_format
-)
+logger = logging.getLogger('PClogger')
+logger.setLevel(logging.INFO)
+handler = logging.FileHandler(log_file_path, mode='w')
+handler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
+logger.addHandler(handler)
 
 class PC:
 
-    @classmethod
-    def get_pc_details(cls):
-        records = select_all_from_urls_to_crawling_orm()
+
+    def get_pc_details(self):
+        records = self.select_all_from_urls_to_crawling_orm()
+        logger.info("Records have been extracted")
+        print(len(records))
         best_before_date = None  # срок годности
         for row in records:
-            logging.info(f"Working with {row[0]} category.")
             try:
                 response = requests.get(row[0])
                 response.raise_for_status()
             except requests.RequestException as e:
-                logging.error(f"Error fetching URL {row[0]}: {e}")
+                logger.error(f"Error fetching URL {row[0]}: {e}")
                 continue
             soup = BeautifulSoup(response.text, "html.parser")
             pattern = r'\b\d{3,}\b'
@@ -51,9 +51,9 @@ class PC:
                 if info_block:
                     best_before_date = info_block.get_text(strip=True)
                 else:
-                    logging.error(f"Информация о сроке годности не найдена: {row[0]}")
+                    logger.error(f"Информация о сроке годности не найдена: {row[0]}")
             else:
-                logging.error(f"Элемент с заголовком 'Срок годности' не найден: {row[0]}")
+                logger.error(f"Элемент с заголовком 'Срок годности' не найден: {row[0]}")
                 best_before_date = "Не найден"
 
             data = {}
@@ -64,17 +64,104 @@ class PC:
                 value = line.find('td', class_='char_value').find('span', itemprop='value').get_text(strip=True)
                 data[name] = value
             date_of_insertion = datetime.date.today()
-            insert_to_urls_to_product_content_orm(sku, products_title, number_of_images, best_before_date,
+            self.insert_to_urls_to_product_content_orm(sku, products_title, number_of_images, best_before_date,
                                                   json.dumps(data), date_of_insertion)
-        logging.info("Data insertion completed.")
+        logger.info("Data insertion completed.")
+        if self.find_duplicates_product_content_orm():
+            self.remove_duplicates_product_content_orm()
+            logger.info(f"Duplicates found")
 
-    @classmethod
-    def find_duplicates(cls):
-        find_duplicates_product_content_orm()
-    @classmethod
-    def remove_duplicates(cls):
-        remove_duplicates_product_content_orm()
+    @staticmethod
+    def select_all_from_urls_to_crawling_orm():
+        try:
+            with engine.connect() as connection:
+                # stmt = select(UrlsToCrawling.pricing_url)
+                today = date.today()
+                stmt = select(UrlsToCrawling.pricing_url).where(
+                    and_(func.date(UrlsToCrawling.date) == func.current_date())
+                )
+                result = connection.execute(stmt)
+                records = result.fetchall()
+        except Exception as e:
+            logger.error(f"Error while executing SELECT query: {str(e)}")
+        return records
+
+    @staticmethod
+    def insert_to_urls_to_product_content_orm(sku, title, number_of_images, best_before_date, characteristic,
+                                              date_of_insertion):
+        try:
+            with engine.connect() as connection:
+                insert_stmt = insert(product_content_orm).values(
+                    sku=sku,
+                    title=title,
+                    number_of_images=number_of_images,
+                    best_before_date=best_before_date,
+                    characteristic=characteristic,
+                    date=date_of_insertion
+                )
+                connection.execute(insert_stmt)
+                connection.commit()
+                logger.info(f'Data inserted: {sku},  {title}')
+        except Exception as e:
+            connection.rollback()
+            logger.error(f"Error while inserting data: {str(e)}")
+
+    @staticmethod
+    def find_duplicates_product_content_orm():
+        session = SessionLocal()
+        try:
+            # Создаем запрос для поиска дубликатов
+            duplicates_stmt = select(
+                ProductContent.sku,
+                ProductContent.date,
+                func.count().label('count')
+            ).group_by(
+                ProductContent.sku,
+                ProductContent.date
+            ).having(func.count() > 1)
+
+            # Выполняем запрос
+            duplicates = session.execute(duplicates_stmt).fetchall()
+
+            return duplicates
+
+        except Exception as e:
+            logger.error(f"Error while finding duplicates: {str(e)}")
+        finally:
+            session.close()  # Закрываем сессию
+
+    @staticmethod
+    def remove_duplicates_product_content_orm():
+        session = SessionLocal()
+        try:
+            # Подзапрос для получения id дубликатов
+            subquery = (
+                select(
+                    ProductContent.id,
+                    func.row_number().over(partition_by=[ProductContent.sku, ProductContent.date]).label('rownum')
+                )
+                .subquery()
+            )
+
+            # Запрос на удаление дубликатов
+            delete_stmt = delete(ProductContent).where(
+                ProductContent.id.in_(
+                    select(subquery.c.id).where(subquery.c.rownum > 1)
+                )
+            )
+
+            # Выполнение запроса на удаление
+            result = session.execute(delete_stmt)
+            session.commit()  # Сохраняем изменения
+
+            logging.info(f"Removed {result.rowcount} duplicate records.")
+
+        except Exception as e:
+            session.rollback()  # Откат транзакции в случае ошибки
+            logger.error(f"Error while removing duplicates: {str(e)}")
+        finally:
+            session.close()  # Закрываем сессию
 
 obj=PC()
 obj.get_pc_details()
-obj.remove_duplicates()
+
